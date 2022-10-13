@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "215800617290",
+    "project_id": "feelathome-354308",
+    "storage_bucket": "feelathome-354308.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215800617290:android:dc8cc2bdd4b4332ba549b3",
+        "android_client_info": {
+          "package_name": "com.flutter.feelathomeproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215800617290-uf1m6lh52djo7p56eetkmqh8flrij26u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flutter.feelathomeproject",
+            "certificate_hash": "7bc69fbc970607f754435631c035b21442527daa"
+          }
+        },
+        {
+          "client_id": "215800617290-3d0s0s0ipelpup8nhc9uom7p9861ualm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq3UqO5AGL7TtQclYrD7EjUsanXYAIuaU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215800617290-3d0s0s0ipelpup8nhc9uom7p9861ualm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
