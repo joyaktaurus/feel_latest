@@ -30,15 +30,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     // AuthProvider auth = Provider.of<AuthProvider>(context);
-
-    var loading = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const <Widget>[
-        CircularProgressIndicator(),
-        Text("Authenticating ... Please wait")
-      ],
-    );
-
     final forgotLabel = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
@@ -98,7 +89,6 @@ class _LoginState extends State<Login> {
               ),
               onPressed: () async {
                 if (formKey.currentState.validate()) {
-                  print("formkey");
                   var res = false;
                   res = await _userViewModel.login();
                   if (res) {
@@ -120,6 +110,21 @@ class _LoginState extends State<Login> {
           backgroundDash(),
           Scaffold(
             backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              toolbarHeight: 100,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => HomeScreen(0)),
+                        (Route<dynamic> route) => false),
+              ),
+              centerTitle: false,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
             body: Container(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -135,7 +140,6 @@ class _LoginState extends State<Login> {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const SizedBox(height: 50.0),
                                   _logoUi(),
                                   const SizedBox(height: 60.0),
                                   const SizedBox(height: 5.0),
@@ -160,7 +164,6 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
-
   }
 
   Widget _logoUi() {

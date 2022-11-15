@@ -155,7 +155,7 @@ class _NotificationPageState extends State<NotificationPage> {
           return model.response == Response.Success &&
                   model.notificationList != null &&
                   model.notificationList.isNotEmpty
-              ? new ListView.builder(
+              ? ListView.builder(
                   itemCount: model.notificationList.length,
                   itemBuilder: (BuildContext ctxt, int Index) {
                     return Card(

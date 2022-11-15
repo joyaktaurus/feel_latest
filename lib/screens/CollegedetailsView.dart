@@ -9,7 +9,7 @@ import '../util/styles.dart';
 import '../util/widgets.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
-import 'home.dart';
+import 'MapPage.dart';
 import 'map_view.dart';
 
 class CollegedetailsView extends StatefulWidget {
@@ -74,7 +74,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                   if (model.response == Response.Success &&
                       model.pptySearchList != null &&
                       model.pptySearchList.isNotEmpty) {
-                /*    return Column(
+                  return Column(
                       children: [
                         Container(
                           child: Column(
@@ -94,7 +94,9 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                               .pptySearchList[widget.id]
                                               .image !=
                                           null
-                                      ? model.pptySearchList[widget.id].image
+                                      ? model
+                                      .pptySearchList[widget.id]
+                                      .image[index]
                                       : null);
                                 },
                               ),
@@ -103,7 +105,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                         ),
                         getBody(),
                       ],
-                    );*/
+                    );
                   } else {
                     return model.pptySearchList.isNotEmpty &&
                             model.response == Response.Success
@@ -330,7 +332,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                                       // HomePage(num.tryParse(model.pptySearchList[widget.id]
                                                       //     .lat)?.toDouble(),num.tryParse(model.pptySearchList[widget.id]
                                                       //     .lng)?.toDouble())))
-                                                      HomePage(
+                                                      MapPage(
                                                           num.tryParse(model
                                                                   .pptySearchList[
                                                                       widget.id]
@@ -865,8 +867,9 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
             filled: true,
             fillColor: LightGrey,
             prefixIcon: Icon(Icons.message, color: Colors.grey),
-            hintText: 'Enter A Message Here',
+            labelText: 'Enter A Message Here',
             hintStyle: TextStyle(color: Colors.grey),
+
             enabledBorder: myinputborder(),
             focusedBorder: myfocusborder(),
             border: OutlineInputBorder(

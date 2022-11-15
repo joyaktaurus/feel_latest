@@ -2,7 +2,7 @@
 //formerly known as complaints
 class NotificationListModel {
   String message;
-  String notification_status;
+  String notification_status='0';
   List<NotificationsData> notif;
 
   NotificationListModel({this.message,this.notification_status="0",this.notif});

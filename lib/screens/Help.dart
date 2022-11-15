@@ -15,7 +15,9 @@ class HelpPage extends StatefulWidget {
   @override
   _HelpPageState createState() => _HelpPageState();
 }
+
 bool arrow = false;
+
 Future<void> _sendMail() async {
   final Uri launchUri = Uri(
     scheme: 'mailto',
@@ -26,6 +28,7 @@ Future<void> _sendMail() async {
 
 class _HelpPageState extends State<HelpPage> {
   bool isExpanded = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,10 +44,7 @@ class _HelpPageState extends State<HelpPage> {
         child: Column(
           children: [
             Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
               height: 100,
               child: Padding(
                 padding: const EdgeInsets.only(top: 40),
@@ -90,10 +90,7 @@ class _HelpPageState extends State<HelpPage> {
         margin: EdgeInsets.all(10),
         child: Container(
           margin: EdgeInsets.only(left: 10, right: 10),
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           height: 100,
           decoration: new BoxDecoration(color: Colors.white),
           child: Row(
@@ -107,7 +104,7 @@ class _HelpPageState extends State<HelpPage> {
                   backgroundColor: MaterialStateProperty.all(GreenBottom),
                   // <-- Button color
                   overlayColor:
-                  MaterialStateProperty.resolveWith<Color>((states) {
+                      MaterialStateProperty.resolveWith<Color>((states) {
                     if (states.contains(MaterialState.pressed))
                       return Colors.blue; // <-- Splash color
                   }),
@@ -161,14 +158,8 @@ class _HelpPageState extends State<HelpPage> {
   Widget getBody() {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
-      height: MediaQuery
-          .of(context)
-          .size
-          .height,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       decoration: new BoxDecoration(color: Colors.white),
       child: Column(
         children: [
@@ -189,42 +180,48 @@ class _HelpPageState extends State<HelpPage> {
             child: Container(
               child: Consumer<UserViewModel>(
                   builder: (contextModel, model, child) {
-                    return model.response == Response.Success &&
+                return model.response == Response.Success &&
                         model.faqList != null &&
                         model.faqList.isNotEmpty
-                        ? new ListView.builder(
+                    ? new ListView.builder(
                         itemCount: 5,
                         itemBuilder: (BuildContext ctxt, int Index) {
-                         return ExpansionTile(
-                           controlAffinity: ListTileControlAffinity.trailing,
-                           collapsedIconColor: isExpanded ? Colors.black : Colors.black,
-                           childrenPadding:
-                           const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                           expandedCrossAxisAlignment: CrossAxisAlignment.end,
-                           maintainState: true,
-                            title:  Text(
-                              model.faqList[Index]
-                                  ?.question ?? "",
+                          return ExpansionTile(
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            collapsedIconColor:
+                                isExpanded ? Colors.black : Colors.black,
+                            childrenPadding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            expandedCrossAxisAlignment: CrossAxisAlignment.end,
+                            maintainState: true,
+                            title: Text(
+                              model.faqList[Index]?.question ?? "",
                               style: TextStyle(
-                                  color: isExpanded ? Colors.black : Colors.black,
+                                  color:
+                                      isExpanded ? Colors.black : Colors.black,
                                   fontSize: 15.5,
-                                  fontWeight: FontWeight.normal),),
-                           children: [
-                             Align(
-                               alignment: Alignment.topLeft,
-                               child: Text(
-                                 model.faqList[Index]
-                                     ?.answer ?? "",
-                                 style: TextStyle(
-                                     color: isExpanded ? Colors.black : Colors.black,
-                                     fontSize: 15.5,
-                                     fontWeight: FontWeight.normal),),
-                             )
-                             // This button is used to remove this item
-                           ],
-                           onExpansionChanged: (bool expanding) => setState(() => this.isExpanded = expanding,),
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  model.faqList[Index]?.answer ?? "",
+                                  style: TextStyle(
+                                      color: isExpanded
+                                          ? Colors.black
+                                          : Colors.black,
+                                      fontSize: 15.5,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              )
+                              // This button is used to remove this item
+                            ],
+                            onExpansionChanged: (bool expanding) => setState(
+                              () => this.isExpanded = expanding,
+                            ),
                           );
-                         /* return Column(
+                          /* return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               InkWell(
@@ -261,16 +258,16 @@ class _HelpPageState extends State<HelpPage> {
                             ],
                           );*/
                         })
-                        : model.faqList.isEmpty &&
-                        model.response == Response.Success
+                    : model.faqList.isEmpty &&
+                            model.response == Response.Success
                         ? Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: Text("No Data"),
-                      ),
-                    )
+                            margin: EdgeInsets.only(top: 20),
+                            child: Center(
+                              child: Text("No Data"),
+                            ),
+                          )
                         : Loading();
-                  }),
+              }),
             ),
           ),
         ],

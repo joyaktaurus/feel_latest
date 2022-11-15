@@ -100,8 +100,7 @@ class _BasicInformationsState extends State<BasicInformations> {
             key: formKey,
             child:Consumer<UserViewModel>(builder: (contextModel, model, child) {
               return model.response == Response.Success &&
-                  model.baiscinfoList != null &&
-                  model.baiscinfoList.isNotEmpty
+                  model.baiscinfoList != null
                   ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -113,9 +112,9 @@ class _BasicInformationsState extends State<BasicInformations> {
                     //validator: validateEmail,
                     onSaved: (value) => _Name = value,
                     controller:
-                    TextEditingController(text: model.baiscinfoList[0]?.name ?? ""),
+                    TextEditingController(text: model.baiscinfoList?.name ?? ""),
                     onChanged: (value) {
-                      model.baiscinfoList[0]?.name=value;
+                      model.baiscinfoList?.name=value;
                     },
                     validator: (value) {
                       if (value.length < 3) {
@@ -163,9 +162,9 @@ class _BasicInformationsState extends State<BasicInformations> {
                     //validator: validateEmail,
                     onSaved: (value) => _email = value,
                     controller:
-                    TextEditingController(text: model.baiscinfoList[0]?.email?? ""),
+                    TextEditingController(text: model.baiscinfoList?.email?? ""),
                     onChanged: (value) {
-                      model.baiscinfoList[0]?.email=value;
+                      model.baiscinfoList?.email=value;
                     },
                     validator: (value) {
                       if (value.isEmpty) {
@@ -188,9 +187,9 @@ class _BasicInformationsState extends State<BasicInformations> {
                     //validator: validateEmail,
                     onSaved: (value) => _phn = value,
                     controller:
-                    TextEditingController(text: model.baiscinfoList[0]?.phone?? ""),
+                    TextEditingController(text: model.baiscinfoList?.phone?? ""),
                     onChanged: (value) {
-                      model.baiscinfoList[0]?.phone=value;
+                      model.baiscinfoList?.phone=value;
                     },
                     validator: (value) {
                       if (value.isEmpty) {

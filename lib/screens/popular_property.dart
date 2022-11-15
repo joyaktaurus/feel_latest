@@ -114,7 +114,7 @@ class _PopularPropertyListState extends State<PopularPropertyList> {
                                           child: model.pptySearchList[index].image != null
                                               ? Image.network(
                                               "https://seowebdesign.in/feelathome/site/images/1/"
-                                                  '${model.pptySearchList[index].image}',
+                                                  '${model.pptySearchList[index].image[0]}',
                                               fit: BoxFit.fitHeight)
                                               : Image.asset("assets/images/no_image.jpg",
                                               fit: BoxFit.fitHeight),

@@ -1,6 +1,5 @@
 // @dart=2.9
 
-
 class UserModel {
   Customer customer;
   String message;

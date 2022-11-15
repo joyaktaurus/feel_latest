@@ -5,6 +5,7 @@ import 'package:feelathomeproject/screens/Notifications.dart';
 import 'package:feelathomeproject/screens/my_Rooms.dart';
 import 'package:feelathomeproject/util/menu_line.dart';
 import 'package:feelathomeproject/util/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../network/shared_preference_helper.dart';
@@ -128,6 +129,14 @@ class _Tab_profileState extends State<Tab_profile> {
                 height: 1.0,
               ),
               OpenFlutterMenuLine(
+                  title: 'Profile',
+                  assetImage: 'assets/images/myprofile.png',
+                  onTap: (() => {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => My_details()))
+                  })),
+              Divider(),
+              OpenFlutterMenuLine(
                   title: 'My Rooms',
                   assetImage: 'assets/images/room.png',
                   onTap: (() => {
@@ -136,21 +145,13 @@ class _Tab_profileState extends State<Tab_profile> {
                       })),
               Divider(),
               OpenFlutterMenuLine(
-                  title: 'My Profiles',
-                  assetImage: 'assets/images/myprofile.png',
-                  onTap: (() => {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => My_details()))
-                      })),
-              Divider(),
-           /*   OpenFlutterMenuLine(
-                  title: 'My Billings',
+                  title: 'Billings',
                   assetImage: 'assets/images/mybilling.png',
                   onTap: (() => {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MyBillingsList()))
-                      })),
-              Divider(),*/
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MyBillingsList()))
+                  })),
+              Divider(),
               OpenFlutterMenuLine(
                   title: 'Notifications',
                   assetImage: 'assets/images/notification.png',
@@ -188,7 +189,8 @@ class _Tab_profileState extends State<Tab_profile> {
               OpenFlutterMenuLine(
                   title: 'Logout',
                   assetImage: 'assets/images/logout.png',
-                  onTap: (() => {sharedPreferenceHelper.removeAll(),
+                  onTap: (() async => {
+                    sharedPreferenceHelper.removeAll(),
                   Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) =>ShowSplash()),
                   (Route<dynamic> route) => false)

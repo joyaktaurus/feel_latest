@@ -3,8 +3,10 @@ import 'package:feelathomeproject/Screens/Radio.dart';
 import 'package:feelathomeproject/screens/CollegedetailsView.dart';
 import 'package:feelathomeproject/screens/popular_property.dart';
 import 'package:feelathomeproject/screens/search_popup.dart';
+import 'package:feelathomeproject/util/background_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../network/shared_preference_helper.dart';
 import '../util/light_color.dart';
 import '../util/styles.dart';
 import '../util/widgets.dart';
@@ -12,6 +14,7 @@ import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
 import '../widgets/loading_widget.dart';
 import 'home_screen.dart';
+import 'login.dart';
 
 class Tab_home_listing extends StatefulWidget {
   //const SplashScreen() : super(key: key);
@@ -25,19 +28,19 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
   UserViewModel _userViewModel;
   int countryValue = 0;
   int countryValueId = 1;
-  String _groupValue;
-
+  String _groupValue = '1';
+  bool _isVisible=false;
   ValueChanged<String> _valueChangedHandler() {
     return (value) => setState(() {
           _groupValue = value;
           print(_groupValue);
-
         });
   }
 
   @override
   void initState() {
     super.initState();
+    _startApp();
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         Provider.of<UserViewModel>(context, listen: false).getCountryList(1));
     WidgetsBinding.instance.addPostFrameCallback((_) =>
@@ -49,132 +52,201 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green.shade50,
-      body: Container(
-        child: Column(
-          children: [
-            SingleChildScrollView(
+    return SafeArea(
+      child: Stack(
+        children: [
+          backgroundHomeDash(),
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Container(
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 10, right: 10, top: 50),
-                    width: MediaQuery.of(context).size.width,
-                    height: 300,
-                    decoration: new BoxDecoration(color: Colors.white),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: _search(),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, right: 10),
-                          height: 200,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("assets/images/banner.jpg"),
-                                fit: BoxFit.cover),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: SingleChildScrollView(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          MyRadioOption<String>(
-                            value: '1',
-                            groupValue: _groupValue,
-                            onChanged: _valueChangedHandler(),
-                            label: 'CANADA',
-                            image: 'assets/images/ca.png',
-                          ),
-                          MyRadioOption<String>(
-                            value: '2',
-                            groupValue: _groupValue,
-                            onChanged: _valueChangedHandler(),
-                            label: 'UK',
-                            image: 'assets/images/gb.png',
-                          ),
-                          MyRadioOption<String>(
-                            value: '3',
-                            groupValue: _groupValue,
-                            onChanged: _valueChangedHandler(),
-                            label: 'IRELAND',
-                            image: 'assets/images/ie.png',
-                          ),
-                          MyRadioOption<String>(
-                            value: '4',
-                            groupValue: _groupValue,
-                            onChanged: _valueChangedHandler(),
-                            label: 'AUSTRALIA',
-                            image: 'assets/images/au.png',
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20, left: 11, right: 10),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => PopularPropertyList()));
-                        },
-                        child: Row(
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 15, right: 10, top: 20),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
                           children: [
-                            Text.rich(
-                              TextSpan(
-                                  text: "POPULAR",
-                                  style: TextStyle(
-                                      color: Colors.lightBlue,
-                                      fontSize: 15.5,
-                                      fontWeight: FontWeight.normal),
-                                  children: [
-                                    TextSpan(
-                                      text: " PROPERTIES",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15.5,
-                                          fontWeight: FontWeight.normal),
-                                    ),
-                                  ]),
-                            ),
-                            Spacer(),
                             Row(
-                              children: [
-                                Text("View All",
-                                    style: new TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.normal)),
-                                Icon(
-                                  Icons.chevron_right_outlined,
-                                  color: Colors.blue,
-                                )
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/logo_text.png',
+                                      fit: BoxFit.fitHeight,
+                                      width: 100.0, height: 65.0,
+                                    ),
+                                  ],
+                                ),
+                         Visibility(
+                           visible: _isVisible,
+                           child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushAndRemoveUntil(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Login()),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                          },
+                                          child: Icon(Icons.person_outlined),
+                                          style: ButtonStyle(
+                                            shape: MaterialStateProperty.all(
+                                                CircleBorder()),
+                                            padding: MaterialStateProperty.all(
+                                                EdgeInsets.all(5)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    GreenBottom),
+                                            // <-- Button color
+                                            overlayColor: MaterialStateProperty
+                                                .resolveWith<Color>((states) {
+                                              if (states.contains(
+                                                  MaterialState.pressed))
+                                                return Colors
+                                                    .blue; // <-- Splash color
+                                            }),
+                                          ),
+                                        ),
+                         )
                               ],
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                "Feel At Home Offers You the",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 15.5,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text("Best Level Of Comfort !!",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20.5,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            _search(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            _CountrySelectionUi(),
+
                           ],
                         ),
                       ),
-                    ),
+
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 20, left: 11, right: 10),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PopularPropertyList()));
+                            },
+                            child: Row(
+                              children: [
+                                const Text.rich(
+                                  TextSpan(
+                                      text: "Popular",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.5,
+                                          fontWeight: FontWeight.bold),
+                                      children: [
+                                        TextSpan(
+                                          text: " Properties",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15.5,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ]),
+                                ),
+                                Spacer(),
+                                Row(
+                                  children: [
+                                    Text("View All",
+                                        style: new TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.normal)),
+                                    Icon(
+                                      Icons.chevron_right_outlined,
+                                      color: Colors.blue,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  Expanded(child: getBody()),
                 ],
               ),
             ),
-            Expanded(child: getBody()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _CountrySelectionUi() {
+    return Container(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MyRadioOption<String>(
+              value: '1',
+              groupValue: _groupValue,
+              id: '1',
+              onChanged: _valueChangedHandler(),
+              label: 'CANADA',
+              image: 'assets/images/candaimage.jpeg',
+            ),
+            MyRadioOption<String>(
+              value: '2',
+              groupValue: _groupValue,
+              id: '2',
+              onChanged: _valueChangedHandler(),
+              label: 'UK',
+              image: 'assets/images/ukimage.webp',
+            ),
+            MyRadioOption<String>(
+              value: '3',
+              groupValue: _groupValue,
+              id: '3',
+              onChanged: _valueChangedHandler(),
+              label: 'IRELAND',
+              image: 'assets/images/irela.jpg',
+            ),
+            MyRadioOption<String>(
+              value: '4',
+              groupValue: _groupValue,
+              id: '4',
+              onChanged: _valueChangedHandler(),
+              label: 'AUSTRALIA',
+              image: 'assets/images/austa.jpg',
+            ),
           ],
         ),
       ),
@@ -183,7 +255,7 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
 
   Widget getBody() {
     return Container(
-      margin: EdgeInsets.only(top: 20, bottom: 10),
+      margin: EdgeInsets.only(top: 20),
       child: Consumer<UserViewModel>(builder: (contextModel, model, child) {
         return model.response == Response.Success &&
                 model.pptySearchList != null &&
@@ -224,7 +296,7 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                               child: model.pptySearchList[i].image != null
                                   ? Image.network(
                                       "https://seowebdesign.in/feelathome/site/images/1/"
-                                      '${model.pptySearchList[i].image}',
+                                      '${model.pptySearchList[i].image[0]}',
                                       fit: BoxFit.fitHeight)
                                   : Image.asset("assets/images/no_image.jpg",
                                       fit: BoxFit.fitHeight),
@@ -241,7 +313,7 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                                           model.pptySearchList[i].property_name)
                                       ? model.pptySearchList[i].property_name
                                       : " ",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
                                   ),
@@ -252,7 +324,7 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                                         child: Text.rich(
                                           TextSpan(
                                               text: "From",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.grey,
                                               ),
@@ -322,190 +394,61 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
 
   Widget _search() {
     return Consumer<UserViewModel>(builder: (contextModel, model, child) {
-      return Container(
-        margin: EdgeInsets.only(top: 8.0),
-        child: Row(
-          children: [
-            /*  Container(
-              height: 40,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(),
-              child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return StatefulBuilder(builder: (context, setState) {
-                          return AlertDialog(
-                            title: Container(
-                              color: Colors.transparent,
-                              child: Text(
-                                'Pick Country',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 15),
-                              ),
-                            ),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  color: Colors.transparent,
-                                  height: 300.0,
-                                  // Change as per your requirement
-                                  width: 300.0,
-                                  // Change as per your requirement
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: model.countryList.length,
-                                    itemBuilder: (context, index) {
-                                      return InkWell(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10),
-                                          child: DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              //background color of dropdown button
-                                              border: Border.all(
-                                                  color: Colors.black12,
-                                                  width: 1),
-                                              //border of dropdown button
-                                              borderRadius: BorderRadius.circular(
-                                                  10), //border raiuds of dropdown button
-                                            ),
-                                            child: Container(
-                                              color: Colors.transparent,
-                                              child: ListTile(
-                                                leading: Container(
-                                                  height: 40,
-                                                  width: 30,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.scaleDown,
-                                                      image: AssetImage(model
-                                                          .countryList[index]
-                                                          .country_photo),
-                                                    ),
-                                                  ),
-                                                ),
-                                                title: Text(model
-                                                        .countryList[index]
-                                                        ?.cname ??
-                                                    ""),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        onTap: () async {
-                                          model.collageList.clear();
-                                          model.campusList.clear();
-                                          model.cityList.clear();
-                                          await model.getCountryList(
-                                              model.countryList[index]?.id ??
-                                                  1);
-                                          WidgetsBinding.instance.addPostFrameCallback((_) =>
-                                              Provider.of<UserViewModel>(context, listen: false)
-                                                  .getSearchList(
-                                                  null,
-                                                  model.countryList[index]?.id ??
-                                                      1,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null,
-                                                  null));
-                                          setState(() {
-                                            countryValue = index;
-                                            countryValueId = model.countryList[index]?.id ?? 1;
-                                          });
-                                          Navigator.pop(context);
-                                        }, //
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("Cancel"),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        });
-                      });
-                },
-                child: Container(
-                  height: 40,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 25,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.scaleDown,
-                            image: model.countryList != null
-                                ? AssetImage(model
-                                    .countryList[countryValue].country_photo)
-                                : AssetImage("assets/images/ca.png"),
-                          ),
-                        ),
-                      ),
-                      const Icon(Icons.arrow_drop_down_rounded),
-                    ],
+      return InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+              // MaterialPageRoute(builder: (context) => HomeScreen(1)),
+              MaterialPageRoute(
+                  builder: (context) => SearchPage(
+                        newCountryValue: countryValueId,
+                      )));
+        },
+        child: Container(
+          child: Container(
+            height: 50,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                //  color: LightColor.lightGrey.withAlpha(100),
+                color: LightColor.lightGrey.withAlpha(80),
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 18.0, right: 2.0),
+                  child: const Icon(Icons.search, color: Colors.grey),
+                ),
+                Text(
+                  "Search",
+                  //  style: countryNameTextStyle,
+                  style: TextStyle(
+                    fontSize: 12.0,
                   ),
                 ),
-              ),
-            ),*/
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                      // MaterialPageRoute(builder: (context) => HomeScreen(1)),
-                      MaterialPageRoute(
-                          builder: (context) => SearchPage(
-                                newCountryValue: countryValueId,
-                              )));
-                },
-                child: Container(
-                  height: 40,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: LightColor.lightGrey.withAlpha(100),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 2.0),
-                        child: const Icon(Icons.search, color: Colors.blue),
-                      ),
-                      Text(
-                        "Search",
-                        //  style: countryNameTextStyle,
-                        style: TextStyle(
-                          fontSize: 12.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              ],
             ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
+          ),
         ),
       );
     });
+  }
+
+  Future<void> _startApp() async {
+    SharedPreferenceHelper sharedPreferenceHelper = SharedPreferenceHelper();
+    String isLoggedIn = await sharedPreferenceHelper.getisLoggedInVale();
+    if (isLoggedIn != null) {
+      if (isLoggedIn == "true") {
+        setState(() {
+          _isVisible =false;
+        });
+      } else {
+        setState(() {
+          _isVisible =true;
+        });
+      }
+    } else {
+      setState(() {
+        _isVisible =true;
+      });
+    }
   }
 }

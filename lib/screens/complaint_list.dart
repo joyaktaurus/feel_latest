@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../util/CustomAlertDialog.dart';
 import '../util/styles.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
@@ -16,17 +17,7 @@ class ComplaintList extends StatefulWidget {
   _ComplaintListState createState() => _ComplaintListState();
 }
 
-Future<void> _makePhoneCall() async {
-  final Uri launchUri = Uri(
-    scheme: 'tel',
-    path: '973883877987',
-  );
-  await launchUrl(launchUri);
-}
-
 class _ComplaintListState extends State<ComplaintList> {
-
-
   @override
   void initState() {
     super.initState();
@@ -37,54 +28,70 @@ class _ComplaintListState extends State<ComplaintList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.green.shade50,
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 42),
-                  child: ListTile(
-                    dense: true,
-                    leading: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.arrow_back)),
-                  ),
+      backgroundColor: Colors.green.shade50,
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 42),
+                child: ListTile(
+                  dense: true,
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back)),
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  child: Text.rich(
-                    TextSpan(
-                        text: "COMPLAINTS",
-                        style: TextStyle(
-                            color: Colors.lightBlue,
-                            fontSize: 20.5,
-                            fontWeight: FontWeight.normal),
-                        children: [
-                          TextSpan(
-                            text: "",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.5,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ]),
-                  ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                child: Text.rich(
+                  TextSpan(
+                      text: "COMPLAINTS",
+                      style: TextStyle(
+                          color: Colors.lightBlue,
+                          fontSize: 20.5,
+                          fontWeight: FontWeight.normal),
+                      children: [
+                        TextSpan(
+                          text: "",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15.5,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ]),
                 ),
               ),
-              Expanded(
-                child: getBodyv(),
-              ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: getBodyv(),
+            ),
+          ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton:
+      Padding(
+        padding: const EdgeInsets.only(bottom: 40.0),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: GreenBottom,
+          onPressed: () {
+            setState(() {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ComplaintRegistration()));
+            });
+          },
+        ),
+      ),
+
+      /* floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Row(
@@ -95,7 +102,16 @@ class _ComplaintListState extends State<ComplaintList> {
                 width: 50.0,
                 child: InkWell(
                   onTap: () {
-                    _makePhoneCall();
+                    showDialog(
+                      barrierColor: Colors.black26,
+                      context: context,
+                      builder: (context) {
+                        return const CustomAlertDialog(
+                          title: "Emergency Call",
+                          description: "Do you want continue.",
+                        );
+                      },
+                    );
                   },
                   child: FittedBox(
                     child: FloatingActionButton(
@@ -108,17 +124,11 @@ class _ComplaintListState extends State<ComplaintList> {
                   ),
                 ),
               ),
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ComplaintRegistration()));
-                },
-                backgroundColor: GreenBottom,
-                child: Icon(Icons.add),
-              ),
+
             ],
           ),
-        ));
+        )*/
+    );
   }
 
   Widget getBodyv() {
@@ -136,9 +146,9 @@ class _ComplaintListState extends State<ComplaintList> {
                   itemBuilder: (BuildContext ctxt, int Index) {
                     return InkWell(
                       onTap: (() => {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ChatRoom(index: Index)))
-                      }),
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ChatRoom(index: Index)))
+                          }),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -147,10 +157,12 @@ class _ComplaintListState extends State<ComplaintList> {
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
@@ -211,41 +223,57 @@ class _ComplaintListState extends State<ComplaintList> {
                                   Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                          model.supportList[Index]?.title ?? "")),
-                                  model.supportList[Index].status=="closed"?
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: RatingBar.builder(
-                                          initialRating:model.supportList[Index].rating !=null
-                                              ? num.tryParse(model.supportList[Index].rating)?.toDouble()
-                                              : 0.0,
-                                          minRating: 1,
-                                          maxRating:model.supportList[Index].rating !=null
-                                              ? num.tryParse(model.supportList[Index].rating)?.toDouble()
-                                              : 0.0,
-                                          tapOnlyMode:false,
-                                          updateOnDrag:false,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: false,
-                                          itemCount: 5,
-                                          itemSize: 15.0,
-                                          itemBuilder: (context, _) => Icon(
-                                            Icons.star,
-                                            color: GreenBottom,
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            print(rating);
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ):
-                                      SizedBox(width: 0,)
+                                          model.supportList[Index]?.description ??
+                                              "")),
+                                  model.supportList[Index].status == "closed"
+                                      ? Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: RatingBar.builder(
+                                                initialRating: model
+                                                            .supportList[Index]
+                                                            .rating !=
+                                                        null
+                                                    ? num.tryParse(model
+                                                            .supportList[Index]
+                                                            .rating)
+                                                        ?.toDouble()
+                                                    : 0.0,
+                                                minRating: 1,
+                                                maxRating: model
+                                                            .supportList[Index]
+                                                            .rating !=
+                                                        null
+                                                    ? num.tryParse(model
+                                                            .supportList[Index]
+                                                            .rating)
+                                                        ?.toDouble()
+                                                    : 0.0,
+                                                tapOnlyMode: false,
+                                                updateOnDrag: false,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: false,
+                                                itemCount: 5,
+                                                itemSize: 15.0,
+                                                itemBuilder: (context, _) =>
+                                                    Icon(
+                                                  Icons.star,
+                                                  color: GreenBottom,
+                                                ),
+                                                onRatingUpdate: (rating) {
+                                                  print(rating);
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : SizedBox(
+                                          width: 0,
+                                        )
                                 ],
                               ),
                             ),

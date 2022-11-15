@@ -10,6 +10,7 @@ class EndPoints {
   static final String forgot ="$baseUrl/forgot-password";
   static final String submit_enquiry ="$baseUrl/submit-enquiry";
   static final String submit_support_ticket ="$baseUrl/submit-support-ticket";
+  static final String submit_support_reply="$baseUrl/reply";
   static final String post_profile_details="$baseUrl/customer-basic-update";
   static final String post_property_with_search="$baseUrl/property-with-search";
   static final String post_star_rating="$baseUrl/star-rating";

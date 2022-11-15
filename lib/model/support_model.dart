@@ -3,8 +3,9 @@
 class SupportTicketListModel {
   String message;
   List<SupportTicketData> tickets;
+  List<CustomerProperties> customerProperties;
 
-  SupportTicketListModel({this.message, this.tickets});
+  SupportTicketListModel({this.message, this.tickets,this.customerProperties});
 
   SupportTicketListModel.fromJson(Map<String, dynamic> json) {
     message = json['status'];
@@ -14,6 +15,12 @@ class SupportTicketListModel {
         tickets.add(new SupportTicketData.fromJson(v));
       });
     }
+    if (json['customer_properties'] != null) {
+      customerProperties = <CustomerProperties>[];
+      json['customer_properties'].forEach((v) {
+        customerProperties.add(new CustomerProperties.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -21,6 +28,9 @@ class SupportTicketListModel {
     data['status'] = this.message;
     if (this.tickets != null) {
       data['data'] = this.tickets.map((v) => v.toJson()).toList();
+    }
+    if (this.customerProperties != null) {
+      data['customer_properties'] = this.customerProperties.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -130,4 +140,23 @@ class History {
     data['replied_on'] = this.replied_on;
     return data;
   }
+}
+class CustomerProperties {
+  int id;
+  String propertyName;
+
+  CustomerProperties({this.id, this.propertyName});
+
+  CustomerProperties.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    propertyName = json['property_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['property_name'] = this.propertyName;
+    return data;
+  }
+
 }

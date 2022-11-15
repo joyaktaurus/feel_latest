@@ -7,7 +7,9 @@ class propertySearchModel {
 
   propertySearchModel.fromJson(Map<String, dynamic> json) {
     message = json['status'];
-    propertydata = json['property'] != null ? new PropertySearchListingData.fromJson(json['property']) : null;
+    propertydata = json['property'] != null
+        ? new PropertySearchListingData.fromJson(json['property'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -45,8 +47,8 @@ class PropertySearchListingData {
     return data;
   }
 }
-class Datavalues
-{
+
+class Datavalues {
   String id;
   String property_name;
   String description;
@@ -63,18 +65,18 @@ class Datavalues
 
   Datavalues(
       {this.id,
-        this.property_name,
-        this.description,
-        this.price,
-        this.price_per,
-        this.living,
-        this.shower,
-        this.bed,
-        this.kitchen,
-        this.parking,
-        this.lat,
-        this.lng,
-        this.image});
+      this.property_name,
+      this.description,
+      this.price,
+      this.price_per,
+      this.living,
+      this.shower,
+      this.bed,
+      this.kitchen,
+      this.parking,
+      this.lat,
+      this.lng,
+      this.image});
 
   Datavalues.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -89,9 +91,12 @@ class Datavalues
     parking = json['parking'];
     lat = json['lat'];
     lng = json['lng'];
-    image = json['property_img'] != null
-        ? (json['property_img'])
-        : null;
+    var array = json['property_img'] != null ? (json['property_img']) : null;
+    if (array == null) {
+      image = null;
+    } else {
+      image = new List<String>.from(array);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -111,24 +116,6 @@ class Datavalues
     if (this.image != null) {
       data['property_img'] = this.image;
     }
-    return data;
-  }
-}
-class PropertyImages {
-  List<String> image;
-  var streetsFromJson;
-
-  PropertyImages({this.streetsFromJson});
-
-  PropertyImages.fromJson(Map<String, dynamic> json) {
-    streetsFromJson = json['property_img'];
-    image = new List<String>.from(streetsFromJson);
-    print(image);
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['property_img'] = this.image;
     return data;
   }
 }

@@ -51,7 +51,7 @@ class _map_viewState extends State<map_view> {
         Marker(
           markerId: MarkerId(_lastMapPosition.toString()),
           position: _lastMapPosition,
-          infoWindow: InfoWindow(
+          infoWindow: const InfoWindow(
             title: 'This is a Title',
             snippet: 'This is a snippet',
           ),

@@ -76,7 +76,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
             padding: EdgeInsets.only(left: 25, top: 10, bottom: 10),
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(color: GreenBottom),
-            child: Text("East Court,Toranto",
+            child: const Text("East Court,Toranto",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0,
@@ -86,7 +86,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
               padding: EdgeInsets.all(8),
               child: Container(
                 decoration: BoxDecoration(
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.white,
                       blurRadius: 8,
@@ -108,16 +108,16 @@ class _MyBillingsListState extends State<MyBillingsList> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     'Amount: ',
                                   ),
                                 ],
                               ),
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 24),
+                                    padding: EdgeInsets.only(right: 24),
                                     child: Text(
                                       '130',
                                     ),
@@ -126,23 +126,23 @@ class _MyBillingsListState extends State<MyBillingsList> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     'Deposit: ',
                                   ),
                                 ],
                               ),
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 24),
+                                    padding: EdgeInsets.only(right: 24),
                                     child: Text(
                                       '130',
                                     ),
@@ -151,23 +151,23 @@ class _MyBillingsListState extends State<MyBillingsList> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     'Starting Date: ',
                                   ),
                                 ],
                               ),
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 24),
+                                    padding: EdgeInsets.only(right: 24),
                                     child: Text(
                                       '12/03/2022',
                                     ),
@@ -176,23 +176,23 @@ class _MyBillingsListState extends State<MyBillingsList> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     'Ending Date: ',
                                   ),
                                 ],
                               ),
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 24),
+                                    padding: EdgeInsets.only(right: 24),
                                     child: Text(
                                       '12/03/2025',
                                     ),
@@ -201,23 +201,23 @@ class _MyBillingsListState extends State<MyBillingsList> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     'Tenure: ',
                                   ),
                                 ],
                               ),
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 24),
+                                    padding: EdgeInsets.only(right: 24),
                                     child: Text(
                                       '2 M',
                                     ),
@@ -226,7 +226,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           SizedBox(
@@ -236,16 +236,16 @@ class _MyBillingsListState extends State<MyBillingsList> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Text(
                                     'Next Pay Amount: ',
                                   ),
                                 ],
                               ),
                               Row(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(right: 24),
+                                    padding: EdgeInsets.only(right: 24),
                                     child: Text(
                                       'Due 14/09/11',
                                     ),
@@ -275,7 +275,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
               padding: EdgeInsets.only(left: 25, top: 5, bottom: 5),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: colorAccent),
-              child: Text("Saturday April 23 2022",
+              child: const Text("Saturday April 23 2022",
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 15.0,
@@ -288,7 +288,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
                   padding: EdgeInsets.all(8),
                   child: Container(
                     decoration: BoxDecoration(
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.white,
                           blurRadius: 8,
@@ -308,8 +308,8 @@ class _MyBillingsListState extends State<MyBillingsList> {
                               Container(
                                 child: Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5.0),
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 5.0),
                                       child: Icon(Icons.monetization_on,color: Colors.green,),
                                     ),
                                     Column(
@@ -318,7 +318,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
                                       children: [
                                         Container(
                                           child: Container(
-                                            child: Text(
+                                            child: const Text(
                                               "MVCN6527625/PAY",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.normal, fontSize: 15.0),
@@ -329,7 +329,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
                                           child: Padding(
                                             padding: const EdgeInsets.only(top: 2),
                                             child: Container(
-                                              child:Text(
+                                              child:const Text(
                                                 "11:09 AM",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.normal, fontSize: 15.0),
@@ -342,8 +342,8 @@ class _MyBillingsListState extends State<MyBillingsList> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15.0),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 15.0),
                                 child: Text(
                                   "\$ 130.00",
                                   style: TextStyle(
@@ -366,7 +366,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
               padding: EdgeInsets.only(left: 25, top: 5, bottom: 5),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: colorAccent),
-              child: Text("Saturday April 23 2022",
+              child: const Text("Saturday April 23 2022",
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 15.0,
@@ -379,7 +379,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
                   padding: EdgeInsets.all(8),
                   child: Container(
                     decoration: BoxDecoration(
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.white,
                           blurRadius: 8,
@@ -399,8 +399,8 @@ class _MyBillingsListState extends State<MyBillingsList> {
                               Container(
                                 child: Row(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5.0),
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 5.0),
                                       child: Icon(Icons.monetization_on,color: Colors.green,),
                                     ),
                                     Column(
@@ -409,7 +409,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
                                       children: [
                                         Container(
                                           child: Container(
-                                            child: Text(
+                                            child: const Text(
                                               "MVCN6527625/PAY",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.normal, fontSize: 15.0),
@@ -420,7 +420,7 @@ class _MyBillingsListState extends State<MyBillingsList> {
                                           child: Padding(
                                             padding: const EdgeInsets.only(top: 2),
                                             child: Container(
-                                              child:Text(
+                                              child:const Text(
                                                 "11:09 AM",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.normal, fontSize: 15.0),

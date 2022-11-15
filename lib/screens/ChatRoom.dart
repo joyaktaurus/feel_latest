@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'package:feelathomeproject/model/support_model.dart';
 import 'package:feelathomeproject/screens/search_popup.dart';
+import 'package:feelathomeproject/util/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import '../util/light_color.dart';
 import '../util/styles.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
+import '../widgets/loading_widget.dart';
 import 'map_view.dart';
 
 class ChatRoom extends StatefulWidget {
@@ -23,12 +25,22 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   UserViewModel _userViewModel;
+  String name = "---";
   @override
   void initState() {
     super.initState();
+    _LoadData();
     _userViewModel = Provider.of<UserViewModel>(context, listen: false);
   }
 
+  Future<void> _LoadData() async {
+    SharedPreferenceHelper sharedPreferenceHelper = SharedPreferenceHelper();
+    var userModel = await sharedPreferenceHelper.getUser();
+    String name = userModel.customer.name;
+    setState(() {
+      this.name = name;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +54,7 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
+        title: const Text(
           "COMPLAINTS",
           style: TextStyle(
               color: Colors.lightBlue,
@@ -88,10 +100,11 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   Widget buildChatComposer(int index, SupportTicketData supportList) {
+    final ReplayController = TextEditingController();
     TextEditingController myController = TextEditingController()
       ..text = supportList.comments != null ? supportList.comments : " ";
     bool isClosed = false;
-    double rate=1;
+    double rate = 1;
     if (supportList.status.isNotEmpty || supportList.status != null) {
       if (supportList.status == "closed") {
         isClosed = true;
@@ -126,12 +139,12 @@ class _ChatRoomState extends State<ChatRoom> {
                 ),
                 const SizedBox(height: 15),
                 new RatingBar.builder(
-                  initialRating:supportList.rating !=null
+                  initialRating: supportList.rating != null
                       ? num.tryParse(supportList.rating)?.toDouble()
                       : 0.0,
                   minRating: 1,
-                  tapOnlyMode:false,
-                  updateOnDrag:false,
+                  tapOnlyMode: false,
+                  updateOnDrag: false,
                   direction: Axis.horizontal,
                   allowHalfRating: false,
                   itemCount: 5,
@@ -141,7 +154,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     color: GreenBottom,
                   ),
                   onRatingUpdate: (rating) {
-                    rate=rating;
+                    rate = rating;
                   },
                 ),
                 Padding(
@@ -178,9 +191,12 @@ class _ChatRoomState extends State<ChatRoom> {
                               ],
                             ),
                             onPressed: () async {
-                              if (myController.text.toString()!=null) {
+                              if (myController.text.toString() != null) {
                                 var res = false;
-                                res = await _userViewModel.PostRating(supportList.id,rate,myController.text.toString());
+                                res = await _userViewModel.PostRating(
+                                    supportList.id,
+                                    rate,
+                                    myController.text.toString());
                               }
                             },
                           ),
@@ -213,6 +229,7 @@ class _ChatRoomState extends State<ChatRoom> {
                         ),
                         Expanded(
                           child: TextField(
+                            controller: ReplayController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Type your comments ...',
@@ -227,11 +244,21 @@ class _ChatRoomState extends State<ChatRoom> {
                 SizedBox(
                   width: 16,
                 ),
-                CircleAvatar(
-                  backgroundColor: GreenBottom,
-                  child: Icon(
-                    Icons.send,
-                    color: Colors.white,
+                InkWell(
+                  onTap: () async {
+                    if (ReplayController.text.toString().isNotEmpty) {
+                      var res = false;
+                      res = await _userViewModel.PostReply(name,ReplayController.text.toString(), supportList.id);
+                    }else{
+                      showToast("Please enter your comments",color: Colors.red);
+                    }
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: GreenBottom,
+                    child: Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    ),
                   ),
                 )
               ],
@@ -241,16 +268,17 @@ class _ChatRoomState extends State<ChatRoom> {
 
   Widget _conversation(SupportTicketData supportList) {
     bool isMe = false;
-    return ListView.builder(
+    return Consumer<UserViewModel>(builder: (contextModel, model, child) {
+      return model.response == Response.Success &&
+          supportList.history  != null &&
+          supportList.history.isNotEmpty
+          ?ListView.builder(
         reverse: false,
         itemCount: supportList.history.length,
         itemBuilder: (context, int index) {
           if (supportList.history[index].is_customer == "1") {
             isMe = true;
           }
-          // final message = messages[index];{
-
-          //message.sender.id == currentUser.id;
           return Container(
             margin: EdgeInsets.only(top: 10),
             child: Column(
@@ -261,13 +289,13 @@ class _ChatRoomState extends State<ChatRoom> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     if (!isMe)
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 15,
                         backgroundImage:
-                            AssetImage("assets/images/account.png"),
+                            AssetImage("assets/images/logo_text.png"),
                         backgroundColor: Colors.white,
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Container(
@@ -314,6 +342,12 @@ class _ChatRoomState extends State<ChatRoom> {
               ],
             ),
           );
-        });
+        }):Container(
+        margin: EdgeInsets.only(top: 20),
+        child: Center(
+          child: Text("No Data"),
+        ),
+      );
+    });
   }
 }

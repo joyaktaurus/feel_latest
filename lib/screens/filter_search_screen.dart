@@ -11,8 +11,9 @@ import 'home_screen.dart';
 class FiltersScreen extends StatefulWidget {
 
   int newCountryValue;
+  String sort;
 
-  FiltersScreen(this.newCountryValue);
+  FiltersScreen(this.newCountryValue,this.sort);
   @override
   _FiltersScreenState createState() => _FiltersScreenState();
 }
@@ -130,7 +131,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
                           },
                         ),
                       ),
-
                     ),
                   ),
                 ),
@@ -163,17 +163,16 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   print(dropdownValue1);
                   sharedPreferenceHelper.searchPopUpValue("true");
                   WidgetsBinding.instance.addPostFrameCallback((_) =>
-                      Provider.of<UserViewModel>(context, listen: false)
-                          .getSearchList(
+                      Provider.of<UserViewModel>(context, listen: false).getSearchList(
                           null,
                           widget.newCountryValue,
                           null,
                           null,
                           null,
-                          null,
+                          widget.sort,
                           dropdownValue1,
                           dropdownValue));
-                  Navigator.of(context).pushReplacement(
+                      Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => HomeScreen(1)));
                 },
                 //onPressed: GoSearch(context,newCollageValue,newCityValue,newCampusValue,_searchKeyword),
@@ -189,7 +188,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.only(left: 1),
-        child: Text("Select Living Rooms",
+        child: Text("Living Rooms",
             style: TextStyle(
                 fontFamily: 'Roboto', color: Colors.black, fontSize: 15)),
       ),
@@ -200,7 +199,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.only(left: 1),
-        child: Text("Select Kitchen",
+        child: Text("Kitchen",
             style: TextStyle(
                 fontFamily: 'Roboto', color: Colors.black, fontSize: 15)),
       ),

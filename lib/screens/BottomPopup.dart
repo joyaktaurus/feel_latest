@@ -19,7 +19,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "MODAL BOTTOM SHEET EXAMPLE",
+              "",
               style: TextStyle(
                   fontStyle: FontStyle.italic,
                   letterSpacing: 0.4,

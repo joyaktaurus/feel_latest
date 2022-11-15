@@ -12,6 +12,7 @@ import 'network_exceptions.dart';
 
 class ApiClient {
   SharedPreferenceHelper sharedPreferenceHelper = SharedPreferenceHelper();
+
   // SharedPreferenceHelper _sharedPreferenceHelper;
   static final ApiClient _singleton = ApiClient._internal();
 
@@ -32,10 +33,10 @@ class ApiClient {
     // var accessToken = await _sharedPreferenceHelper.authToken;
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      showToast('Network Not available, Please check connection', color: Colors.red);
+      showToast('Network Not available, Please check connection',
+          color: Colors.red);
       throw NetworkException(
           message: "Network Not available, Please check connection", code: 999);
-
     }
     var header = {
       'Content-Type': 'application/json',
@@ -58,17 +59,18 @@ class ApiClient {
       return _decoder.convert(res);
     });
   }
+
   //Get
   Future<dynamic> getWithHeader(String url) async {
     var userModel = await sharedPreferenceHelper.getUser();
     String customeapiToken = userModel.customer.api_token;
     // var accessToken = await _sharedPreferenceHelper.authToken;
-     var connectivityResult = await (Connectivity().checkConnectivity());
+    var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      showToast('Network Not available, Please check connection', color: Colors.red);
-     throw NetworkException(
-        message: "Network Not available, Please check connection", code: 999);
-
+      showToast('Network Not available, Please check connection',
+          color: Colors.red);
+      throw NetworkException(
+          message: "Network Not available, Please check connection", code: 999);
     }
     var header = {
       'Content-Type': 'application/json',
@@ -97,14 +99,14 @@ class ApiClient {
 //Post
   Future<dynamic> post(String url,
       {Map<String, String> headers,
-        Map<dynamic, dynamic> body,
-        encoding}) async {
+      Map<dynamic, dynamic> body,
+      encoding}) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      showToast('Network Not available, Please check connection', color: Colors.red);
+      showToast('Network Not available, Please check connection',
+          color: Colors.red);
       throw NetworkException(
           message: "Network Not available, Please check connection", code: 999);
-
     }
     if (headers == null) {
       headers = HashMap<String, String>();
@@ -118,14 +120,13 @@ class ApiClient {
       Uri.parse(url),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(body),
-    ).then((http.Response response) {
+    )
+        .then((http.Response response) {
       final String res = response.body;
       final int statusCode = response.statusCode;
       print("RESPONSE==${response.body}");
-      if(statusCode==401){
-
-      }
-      else if (statusCode < 200 || statusCode > 400 || json == null) {
+      if (statusCode == 401) {
+      } else if (statusCode < 200 || statusCode > 400 || json == null) {
         throw NetworkException(
             message: "Error fetching data from server", code: statusCode);
       } else if (_decoder.convert(res)['error'] != null) {
@@ -142,16 +143,18 @@ class ApiClient {
       return _decoder.convert(res);
     });
   }
+
 //Post With Header
   Future<dynamic> postWithHeader(String url,
       {Map<String, String> headers,
-        Map<dynamic, dynamic> body,
-        encoding}) async {
+      Map<dynamic, dynamic> body,
+      encoding}) async {
     var userModel = await sharedPreferenceHelper.getUser();
     String customeapiToken = userModel.customer.api_token;
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      showToast('Network Not available, Please check connection', color: Colors.red);
+      showToast('Network Not available, Please check connection',
+          color: Colors.red);
       throw NetworkException(
           message: "Network Not available, Please check connection", code: 999);
     }
@@ -166,17 +169,15 @@ class ApiClient {
     return http
         .post(
       Uri.parse(url),
-      headers: {"Content-Type": "application/json",
-        "token": customeapiToken},
+      headers: {"Content-Type": "application/json", "token": customeapiToken},
       body: jsonEncode(body),
-    ).then((http.Response response) {
+    )
+        .then((http.Response response) {
       final String res = response.body;
       final int statusCode = response.statusCode;
       print("RESPONSE==${response.body}");
-      if(statusCode==401){
-
-      }
-      else if (statusCode < 200 || statusCode > 400 || json == null) {
+      if (statusCode == 401) {
+      } else if (statusCode < 200 || statusCode > 400 || json == null) {
         throw NetworkException(
             message: "Error fetching data from server", code: statusCode);
       } else if (_decoder.convert(res)['error'] != null) {
@@ -233,37 +234,69 @@ class ApiClient {
   }
 
   // ignore: missing_return
-  Future<http.StreamedResponse> multipartRequest(String url,
+  Future<dynamic> multipartRequest(String url,
       {Map<String, String> headers,
-        Map<String, String> body,
-        filePath,
-        String field,
-        length}) async {
-    if (headers == null) {
-      headers = HashMap<String, String>();
-      headers['Content-Type'] = 'multipart/form-data';
+      Map<String, String> body,
+      filePath,
+      String field,
+      length}) async {
+    var userModel = await sharedPreferenceHelper.getUser();
+    String customeapiToken = userModel.customer.api_token;
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      showToast('Network Not available, Please check connection',
+          color: Colors.red);
+      throw NetworkException(
+          message: "Network Not available, Please check connection", code: 999);
     }
-
-    // var bodyData = jsonEncode(body);
-    // print(jsonDecode(bodyData));
+    print("URLLL==$url");
+    headers = HashMap<String, String>();
+    headers['Content-Type'] = 'multipart/form-data';
+    headers['token'] = customeapiToken;
     try {
       var request = http.MultipartRequest('POST', Uri.parse(url));
-      request.files.add(await http.MultipartFile.fromPath("$field", filePath));
+      request.files.add(await http.MultipartFile.fromPath("files", filePath));
       request.headers.addAll(headers);
       request.fields.addAll(body);
-      var response = request.send();
-      return response;
+      request
+          .send()
+          .then((result) async {
+            http.Response.fromStream(result).then((response) {
+              print(response.statusCode);
+              final String res = response.body;
+              final int statusCode = response.statusCode;
+
+              print("RESPONSE==${response.body}");
+
+              if (response.statusCode == 200) {
+                print("Uploaded! ");
+                print(response.body);
+                Map<String, dynamic> data = jsonDecode(response.body);
+                String message = data["message"];
+                showToast(message, color: Colors.green);
+              } else if (statusCode < 200 || statusCode > 400 || json == null) {
+                throw NetworkException(
+                    message: "Error fetching data from server", code: statusCode);
+              }
+              return _decoder.convert(res);
+            });
+          })
+          .catchError((err) => print('error : ' + err.toString()))
+          .whenComplete(() {});
+      // var response = request.send();
+      // return response;
     } on NetworkException catch (e) {
       print(e);
     }
+
   }
 
   Future<http.StreamedResponse> multiplepartRequest(String url,
       {Map<String, String> headers,
-        Map<String, String> body,
-        List<String> filePath,
-        String field,
-        length}) async {
+      Map<String, String> body,
+      List<String> filePath,
+      String field,
+      length}) async {
     List<http.MultipartFile> newList = [];
     for (var path in filePath) {
       var multipartFile = await http.MultipartFile.fromPath('$field', path);
@@ -286,12 +319,10 @@ class ApiClient {
   }
 
   Future<dynamic> delete(String url, {Map<String, String> headers}) async {
-
     if (headers == null) {
       headers = HashMap<String, String>();
       headers['Content-Type'] = 'application/json';
     }
-
     return http
         .delete(Uri.parse(url), headers: headers)
         .then((http.Response response) {

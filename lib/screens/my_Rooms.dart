@@ -27,46 +27,41 @@ class _My_RoomsState extends State<My_Rooms> {
       body: Container(
         child: Column(
           children: [
-            Container(child: getHeader()),
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: ListTile(
+                  dense: true,
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back)),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                child: Text(
+                  "MY ROOMS",
+                  style: TextStyle(
+                      color: GreenBottom,
+                      fontSize: 20.5,
+                      fontWeight: FontWeight.normal),
+                ),
+              ),
+            ),
             Expanded(
               child: getBody(),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget getHeader() {
-    return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, top: 50),
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 20,
-                ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Container(
-                        child: Text(
-                      'MY ROOMS',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                          color: colorAccent),
-                    )),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
