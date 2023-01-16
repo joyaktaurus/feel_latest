@@ -104,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pageOptions[widget.selectedPage],
+
       extendBody: true,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

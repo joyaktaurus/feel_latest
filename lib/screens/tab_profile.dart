@@ -70,10 +70,11 @@ class _Tab_profileState extends State<Tab_profile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.only(top: 20),
                 child: Image.asset(
-                  'assets/images/account.png',
-                  width: 61,
+                  'assets/images/logo_text.png',
+                  width: 150,
+                  fit: BoxFit.fill,
                 ),
               ),
             ],
@@ -132,9 +133,9 @@ class _Tab_profileState extends State<Tab_profile> {
                   title: 'Profile',
                   assetImage: 'assets/images/myprofile.png',
                   onTap: (() => {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => My_details()))
-                  })),
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => My_details()))
+                      })),
               Divider(),
               OpenFlutterMenuLine(
                   title: 'My Rooms',
@@ -144,14 +145,14 @@ class _Tab_profileState extends State<Tab_profile> {
                             MaterialPageRoute(builder: (context) => My_Rooms()))
                       })),
               Divider(),
-              OpenFlutterMenuLine(
-                  title: 'Billings',
-                  assetImage: 'assets/images/mybilling.png',
-                  onTap: (() => {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MyBillingsList()))
-                  })),
-              Divider(),
+              // OpenFlutterMenuLine(
+              //     title: 'Billings',
+              //     assetImage: 'assets/images/mybilling.png',
+              //     onTap: (() => {
+              //       Navigator.of(context).push(
+              //           MaterialPageRoute(builder: (context) => MyBillingsList()))
+              //     })),
+              // Divider(),
               OpenFlutterMenuLine(
                   title: 'Notifications',
                   assetImage: 'assets/images/notification.png',
@@ -169,7 +170,7 @@ class _Tab_profileState extends State<Tab_profile> {
                       })),
               Divider(),
               OpenFlutterMenuLine(
-                  title: 'Complaints',
+                  title: 'Support Ticket',
                   assetImage: 'assets/images/complaints.png',
                   onTap: (() => {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -190,11 +191,12 @@ class _Tab_profileState extends State<Tab_profile> {
                   title: 'Logout',
                   assetImage: 'assets/images/logout.png',
                   onTap: (() async => {
-                    sharedPreferenceHelper.removeAll(),
-                  Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) =>ShowSplash()),
-                  (Route<dynamic> route) => false)
-                  })),
+                        sharedPreferenceHelper.removeAll(),
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => ShowSplash()),
+                            (Route<dynamic> route) => false)
+                      })),
               Divider(),
             ],
           )

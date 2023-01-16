@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
+import '../widgets/loading_animation.dart';
 import '../widgets/loading_widget.dart';
 
 Directory _appDocsDir;
@@ -111,7 +112,7 @@ class _PreviewScreenState extends State<PreviewScreen>
                     ],
                   ),
                 )
-              : Loading();
+              : LoadingAnimation();
         }));
   }
 }

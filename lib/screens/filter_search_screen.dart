@@ -159,8 +159,20 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 borderColor: Colors.black,
                 textColor: Colors.black,
                 onPressed: () async {
+                  String TempdropdownValue1;
+                  String TempdropdownValue2;
                   print(dropdownValue);
                   print(dropdownValue1);
+                  if(dropdownValue1=='All'){
+                    TempdropdownValue1=null;
+                  }else{
+                    TempdropdownValue1=dropdownValue1;
+                  }
+                  if(dropdownValue=='All'){
+                    TempdropdownValue2=null;
+                  }else{
+                    TempdropdownValue2=dropdownValue;
+                  }
                   sharedPreferenceHelper.searchPopUpValue("true");
                   WidgetsBinding.instance.addPostFrameCallback((_) =>
                       Provider.of<UserViewModel>(context, listen: false).getSearchList(
@@ -170,8 +182,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
                           null,
                           null,
                           widget.sort,
-                          dropdownValue1,
-                          dropdownValue));
+                          TempdropdownValue1,
+                          TempdropdownValue2));
                       Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => HomeScreen(1)));
                 },

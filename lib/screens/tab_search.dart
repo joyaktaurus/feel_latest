@@ -2,17 +2,20 @@
 
 import 'package:feelathomeproject/screens/filter_search_screen.dart';
 import 'package:feelathomeproject/screens/search_popup.dart';
+import 'package:feelathomeproject/widgets/loading_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../model/countries_model.dart';
 import '../network/shared_preference_helper.dart';
 import '../util/light_color.dart';
 import '../util/styles.dart';
+import '../util/widgets.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
 import '../widgets/loading_widget.dart';
 import 'BottomPopup.dart';
 import 'CollegedetailsView.dart';
+import 'MapPage.dart';
 import 'home_screen.dart';
 import 'map_view.dart';
 
@@ -29,11 +32,12 @@ class _Tab_searchhState extends State<Tab_searchh> {
   int newCountryValue = 1;
   int countryValue = 0;
   String countryid; //default id for the dropdown
-  String sort="low"; //default id for the dropdown
+  String sort = "low"; //default id for the dropdown
   int countryValueId = 1;
   String dropdownValue, dropdownValue1, dropdownValue2;
   String collage = "Collage", campus = "Campus", city = "City";
   SharedPreferenceHelper sharedPreferenceHelper = SharedPreferenceHelper();
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +46,8 @@ class _Tab_searchhState extends State<Tab_searchh> {
         Provider.of<UserViewModel>(context, listen: false).getCountryList(1));
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         Provider.of<UserViewModel>(context, listen: false).getCollageList(1));
+    // WidgetsBinding.instance.addPostFrameCallback((_) =>
+    //     Provider.of<UserViewModel>(context, listen: false).getCurrencyList(1));
   }
 
   Future<void> _startApp() async {
@@ -90,10 +96,9 @@ class _Tab_searchhState extends State<Tab_searchh> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              FiltersScreen(countryValueId,sort)));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          FiltersScreen(countryValueId, sort)));
                                 },
                                 child: Container(
                                   child: Row(
@@ -105,7 +110,8 @@ class _Tab_searchhState extends State<Tab_searchh> {
                                         fit: BoxFit.fill,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 2.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 2.0),
                                         child: const Text(
                                           "Filter",
                                           textAlign: TextAlign.center,
@@ -131,55 +137,64 @@ class _Tab_searchhState extends State<Tab_searchh> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             ListTile(
-                                              leading:  new Text('All'),
+                                              leading: new Text('All'),
                                               onTap: () {
-                                                WidgetsBinding.instance.addPostFrameCallback((_) =>
-                                                    Provider.of<UserViewModel>(context, listen: false)
-                                                        .getSearchList(
-                                                        null,
-                                                        countryValueId,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        null));
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) =>
+                                                        Provider.of<UserViewModel>(
+                                                                context,
+                                                                listen: false)
+                                                            .getSearchList(
+                                                                null,
+                                                                countryValueId,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null));
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             ListTile(
-                                              leading:  new Text('Low to High'),
+                                              leading: new Text('Low to High'),
                                               onTap: () {
-                                                sort="low";
-                                                WidgetsBinding.instance.addPostFrameCallback((_) =>
-                                                    Provider.of<UserViewModel>(context, listen: false)
-                                                        .getSearchList(
-                                                        null,
-                                                        countryValueId,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        sort,
-                                                        null,
-                                                        null));
+                                                sort = "low";
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) =>
+                                                        Provider.of<UserViewModel>(
+                                                                context,
+                                                                listen: false)
+                                                            .getSearchList(
+                                                                null,
+                                                                countryValueId,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                sort,
+                                                                null,
+                                                                null));
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             ListTile(
-                                              leading:  new Text('High to Low'),
+                                              leading: new Text('High to Low'),
                                               onTap: () {
-                                                sort="high";
-                                                WidgetsBinding.instance.addPostFrameCallback((_) =>
-                                                    Provider.of<UserViewModel>(context, listen: false)
-                                                        .getSearchList(
-                                                        null,
-                                                        countryValueId,
-                                                        null,
-                                                        null,
-                                                        null,
-                                                        sort,
-                                                        null,
-                                                        null));
+                                                sort = "high";
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) =>
+                                                        Provider.of<UserViewModel>(
+                                                                context,
+                                                                listen: false)
+                                                            .getSearchList(
+                                                                null,
+                                                                countryValueId,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                sort,
+                                                                null,
+                                                                null));
                                                 Navigator.pop(context);
                                               },
                                             ),
@@ -197,7 +212,8 @@ class _Tab_searchhState extends State<Tab_searchh> {
                                         fit: BoxFit.fill,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 2.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 2.0),
                                         child: const Text(
                                           "Sort",
                                           textAlign: TextAlign.center,
@@ -343,6 +359,20 @@ class _Tab_searchhState extends State<Tab_searchh> {
                                             countryValueId =
                                                 model.countryList[index]?.id ??
                                                     1;
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback((_) =>
+                                                    Provider.of<UserViewModel>(
+                                                            context,
+                                                            listen: false)
+                                                        .getSearchList(
+                                                            null,
+                                                            countryValueId,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            sort,
+                                                            null,
+                                                            null));
                                           });
                                           Navigator.pop(context);
                                         }, //
@@ -847,280 +877,378 @@ class _Tab_searchhState extends State<Tab_searchh> {
           );
         },
         child: Consumer<UserViewModel>(builder: (contextModel, model, child) {
-          return model.response == Response.Success &&
-                  model.pptySearchList != null &&
-                  model.pptySearchList.isNotEmpty
-              ? new ListView.builder(
-                  itemCount: model.pptySearchList.length,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext ctxt, int Index) {
-                    return GestureDetector(
-                      child: Card(
-                        elevation: 4,
-                        margin: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Row(
+          return model.response == Response.Loading
+              ? LoadingAnimation()
+              : model.response == Response.Success &&
+                      model.pptySearchList != null &&
+                      model.pptySearchList.isNotEmpty
+                  ? new ListView.builder(
+                      itemCount: model.pptySearchList.length,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext ctxt, int Index) {
+                        return GestureDetector(
+                          child: Card(
+                            elevation: 4,
+                            margin: EdgeInsets.all(10),
+                            child: Column(
                               children: [
-                                Container(
-                                  width: 100,
-                                  height: 120,
-                                  child: model.pptySearchList[Index].image !=
-                                          null
-                                      ? Image.network(
-                                          "https://seowebdesign.in/feelathome/site/images/1/"
-                                          '${model.pptySearchList[Index].image[0]}',
-                                          fit: BoxFit.fitHeight)
-                                      : Image.asset(
-                                          "assets/images/no_image.jpg",
-                                          fit: BoxFit.fitHeight),
-                                ),
-                                SizedBox(width: 5),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  model.pptySearchList[Index]
-                                                          ?.property_name ??
-                                                      "",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black,
-                                                  ),
-                                                  maxLines: 2,
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      height: 120,
+                                      child: model.pptySearchList[Index]
+                                                  .image !=
+                                              null
+                                          ? Image.network(
+                                              "https://seowebdesign.in/feelathome/site/images/1/"
+                                              '${model.pptySearchList[Index].image[0]}',
+                                              fit: BoxFit.fill)
+                                          : Image.asset("assets/images/nia.jpg",
+                                              fit: BoxFit.fitHeight),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      model
+                                                              .pptySearchList[
+                                                                  Index]
+                                                              ?.property_name ??
+                                                          "",
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.black,
+                                                      ),
+                                                      maxLines: 2,
+                                                    ),
+                                                    model.pptySearchList[Index]
+                                                                .price !=
+                                                            null
+                                                        ? SizedBox(
+                                                            child: Column(
+                                                                children: [
+                                                                Row(children: [
+                                                                  Text(
+                                                                    "From",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .grey,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    " "
+                                                                    '${model.pptySearchList[Index].currency_code}',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color:
+                                                                          GreenBottom,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    " "
+                                                                    '${model.pptySearchList[Index].price}',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color:
+                                                                          GreenBottom,
+                                                                    ),
+                                                                  ),]),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            25),
+                                                                    child: Row(
+                                                                        children: [
+                                                                          Text(
+                                                                            " \/"
+                                                                            '${model.pptySearchList[Index].price_per_pr}',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            " \/"
+                                                                            '${model.pptySearchList[Index].price_per}',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: Colors.grey,
+                                                                            ),
+                                                                          ),
+                                                                        ]),
+                                                                  ),
+                                                                ]),
+                                                              )
+                                                        : Container(),
+                                                  ],
                                                 ),
-
-                                                model.pptySearchList[Index].price != null
-                                                    ? SizedBox(
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                        text: "From",
-                                                        style: TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.grey,
-                                                        ),
-                                                        children: [
-                                                          TextSpan(
-                                                            text: " \$"
-                                                                '${model.pptySearchList[Index].price}',
-                                                            style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontWeight: FontWeight.w600,
-                                                              color: GreenBottom,
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: "/week",
-                                                            style: TextStyle(
-                                                              fontSize: 12,
-                                                              color: Colors.grey,
-                                                            ),
-                                                          ),
-                                                        ]),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  model.pptySearchList[Index]
+                                                                  .lat !=
+                                                              null &&
+                                                          model
+                                                                  .pptySearchList[
+                                                                      Index]
+                                                                  .lng !=
+                                                              null
+                                                      ? Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      // HomePage(num.tryParse(model.pptySearchList[widget.id]
+                                                                      //     .lat)?.toDouble(),num.tryParse(model.pptySearchList[widget.id]
+                                                                      //     .lng)?.toDouble())))
+                                                                      MapPage(
+                                                                          num.tryParse(model.pptySearchList[Index].lat)
+                                                                              ?.toDouble(),
+                                                                          num.tryParse(model.pptySearchList[Index].lng)
+                                                                              ?.toDouble())))
+                                                      : showToast(
+                                                          'Location Not Available',
+                                                          color: Colors.red);
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 8.0),
+                                                  child: Image.asset(
+                                                    "assets/images/smallmap.png",
+                                                    height: 30.0,
+                                                    width: 30.0,
+                                                    fit: BoxFit.scaleDown,
                                                   ),
-                                                )
-                                                    : Container(),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Image.asset(
+                                                      "assets/images/bed.png",
+                                                      height: 15.0,
+                                                      width: 20.0,
+                                                      fit: BoxFit.scaleDown,
+                                                    ),
+                                                    Text(
+                                                        model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.bed !=
+                                                                null
+                                                            ? model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.bed ??
+                                                                0
+                                                            : "0",
+                                                        style: new TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 10.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal)),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Image.asset(
+                                                      "assets/images/hall.png",
+                                                      height: 15.0,
+                                                      width: 20.0,
+                                                      fit: BoxFit.scaleDown,
+                                                    ),
+                                                    Text(
+                                                        model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.living !=
+                                                                null
+                                                            ? model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.living ??
+                                                                0
+                                                            : "0",
+                                                        style: new TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 10.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal)),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Image.asset(
+                                                      "assets/images/bathroom.png",
+                                                      height: 15.0,
+                                                      width: 20.0,
+                                                      fit: BoxFit.scaleDown,
+                                                    ),
+                                                    Text(
+                                                        model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.shower !=
+                                                                null
+                                                            ? model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.shower ??
+                                                                0
+                                                            : "0",
+                                                        style: new TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 10.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal)),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Image.asset(
+                                                      "assets/images/kitchen.png",
+                                                      height: 15.0,
+                                                      width: 20.0,
+                                                      fit: BoxFit.scaleDown,
+                                                    ),
+                                                    Text(
+                                                        model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.kitchen !=
+                                                                null
+                                                            ? model
+                                                                    .pptySearchList[
+                                                                        Index]
+                                                                    ?.kitchen ??
+                                                                0
+                                                            : "0",
+                                                        style: new TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 10.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal)),
+                                                  ],
+                                                ),
                                               ],
                                             ),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          map_view()));
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: Image.asset(
-                                                "assets/images/smallmap.png",
-                                                height: 30.0,
-                                                width: 30.0,
-                                                fit: BoxFit.scaleDown,
-                                              ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            model.pptySearchList[Index]
+                                                    ?.description ??
+                                                "",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey,
                                             ),
+                                            maxLines: 2,
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/bed.png",
-                                                  height: 15.0,
-                                                  width: 20.0,
-                                                  fit: BoxFit.scaleDown,
-                                                ),
-                                                Text(
-                                                    model.pptySearchList[Index]
-                                                                ?.bed !=
-                                                            null
-                                                        ? model
-                                                                .pptySearchList[
-                                                                    Index]
-                                                                ?.bed ??
-                                                            0
-                                                        : "0",
-                                                    style: new TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 10.0,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/hall.png",
-                                                  height: 15.0,
-                                                  width: 20.0,
-                                                  fit: BoxFit.scaleDown,
-                                                ),
-                                                Text(
-                                                    model.pptySearchList[Index]
-                                                                ?.living !=
-                                                            null
-                                                        ? model
-                                                                .pptySearchList[
-                                                                    Index]
-                                                                ?.living ??
-                                                            0
-                                                        : "0",
-                                                    style: new TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 10.0,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/bathroom.png",
-                                                  height: 15.0,
-                                                  width: 20.0,
-                                                  fit: BoxFit.scaleDown,
-                                                ),
-                                                Text(
-                                                    model.pptySearchList[Index]
-                                                                ?.shower !=
-                                                            null
-                                                        ? model
-                                                                .pptySearchList[
-                                                                    Index]
-                                                                ?.shower ??
-                                                            0
-                                                        : "0",
-                                                    style: new TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 10.0,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ],
-                                            ),
-                                            Column(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/kitchen.png",
-                                                  height: 15.0,
-                                                  width: 20.0,
-                                                  fit: BoxFit.scaleDown,
-                                                ),
-                                                Text(
-                                                    model.pptySearchList[Index]
-                                                                ?.kitchen !=
-                                                            null
-                                                        ? model
-                                                                .pptySearchList[
-                                                                    Index]
-                                                                ?.kitchen ??
-                                                            0
-                                                        : "0",
-                                                    style: new TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 10.0,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        model.pptySearchList[Index]
-                                                ?.description ??
-                                            "",
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                        maxLines: 2,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => CollegedetailsView(
-                                  id: Index,
-                                  getToolbarname: model.pptySearchList[Index]
-                                          .property_name.isEmpty
-                                      ? " "
-                                      : model.pptySearchList[Index]
-                                                  .property_name !=
-                                              null
-                                          ? model
-                                              .pptySearchList[Index].property_name
-                                          : " ",
-                                  isfromSearach: true,
-                                )));
-                      },
-                    );
-                  })
-              : model.pptySearchList.isEmpty &&
-                      model.response == Response.Success
-                  ? ListView(
-                      children: [
-                        SizedBox(
-                          height: 25,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 20),
-                          child: Center(
-                            child: Text("No Data"),
                           ),
-                        ),
-                      ],
-                      padding: EdgeInsets.all(10),
-                    )
-                  : Loading();
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CollegedetailsView(
+                                      id: Index,
+                                      getToolbarname: model
+                                              .pptySearchList[Index]
+                                              .property_name
+                                              .isEmpty
+                                          ? " "
+                                          : model.pptySearchList[Index]
+                                                      .property_name !=
+                                                  null
+                                              ? model.pptySearchList[Index]
+                                                  .property_name
+                                              : " ",
+                                      isfromSearach: true,
+                                    )));
+                          },
+                        );
+                      })
+                  : model.response == Response.Success &&
+                              model.pptySearchList == null &&
+                              model.pptySearchList.isEmpty ||
+                          model.response == Response.Error
+                      ? ListView(
+                          children: [
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Center(
+                                child: Text("No Data"),
+                              ),
+                            ),
+                          ],
+                          padding: EdgeInsets.all(10),
+                        )
+                      : ListView(
+                          children: [
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: Center(
+                                child: Text("No Data"),
+                              ),
+                            ),
+                          ],
+                          padding: EdgeInsets.all(10),
+                        );
         }),
       ),
     );

@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../util/styles.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
+import '../widgets/loading_animation.dart';
 import '../widgets/loading_widget.dart';
 import 'map_view.dart';
 
@@ -222,7 +223,7 @@ class _AboutPageState extends State<AboutPage> {
                 ),
               ],
             )
-          : Loading();
+          : LoadingAnimation();
     });
   }
 }

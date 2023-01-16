@@ -20,7 +20,7 @@ import 'package:http/http.dart' as http;
 class UserViewModel extends BaseViewModel {
   var hidePhone = false;
   var isLoggedIn = false;
-
+  PostResponse postresponse = PostResponse.Starting;
   UserModel userModel = UserModel(customer: Customer());
   late AboutDataModel aboutDataModel = AboutDataModel();
   late NotificationListModel notifDataModel = NotificationListModel();
@@ -29,9 +29,11 @@ class UserViewModel extends BaseViewModel {
   List<RoomsListData> roomsList = [];
   List<FaqData> faqList = [];
   List<SupportTicketData> supportList = [];
+  List<History> historyList = [];
   List<CustomerProperties> customerPrtyList = [];
   List<NotificationsData> notificationList = [];
   List<CountryData> countryList = [];
+  // List<CountryData> currencyList = [];
   List<CollegeData> collageList = [];
   List<CityData> cityList = [];
   List<CampusData> campusList = [];
@@ -188,6 +190,27 @@ class UserViewModel extends BaseViewModel {
     return true;
   }
 
+  // getCurrencyList(int getClgid) async {
+  //   currencyList.clear();
+  //   countryList.clear();
+  //   collageList.clear();
+  //   campusList.clear();
+  //   cityList.clear();
+  //   var lstOfCurnames = currencyList;
+  //
+  //   lstOfCurnames.add(new CountryData(
+  //       id: 1, cname: "CANADA", currency_name: "CAD"));
+  //   lstOfCurnames.add(new CountryData(
+  //       id: 2, cname: "UK", currency_name: "UK"));
+  //   lstOfCurnames.add(new CountryData(
+  //       id: 3, cname: "IRELAND", currency_name: "IRE"));
+  //   lstOfCurnames.add(new CountryData(
+  //       id: 4, cname: "AUSTRALIA", currency_name: "AUS"));
+  //   getCollageList(getClgid);
+  //   setSuccess();
+  //   return true;
+  // }
+
   Future getCollageList(int getid) async {
     setLoading();
     collageList.clear();
@@ -253,13 +276,32 @@ class UserViewModel extends BaseViewModel {
       return false;
     }
   }
-
   changeHide(bool value) {
     hidePhone = value;
     notifyListeners();
   }
+  setPostSatrting() {
+    postresponse = PostResponse.Starting;
+    notifyListeners();
+  }
 
+  setPostLoading() {
+    postresponse = PostResponse.Loading;
+    notifyListeners();
+  }
+
+  setPostSuccess() {
+    postresponse = PostResponse.Success;
+    notifyListeners();
+  }
+
+  setPostError() {
+    postresponse = PostResponse.Error;
+    notifyListeners();
+  }
   Future<bool> login() async {
+    setLoading();
+    setPostLoading();
     var res = false;
     sharedPreferenceHelper.saveisLoggedInVale("false");
     var fcmToken = await FirebaseMessaging.instance.getToken();
@@ -274,6 +316,7 @@ class UserViewModel extends BaseViewModel {
       if (data['status'] == "Unauthorised") {
         showToast("Unauthorised", color: Colors.red);
         setSuccess();
+        setPostSuccess();
         res = false;
         return false;
       } else if (data['status'] == "Authorised") {
@@ -285,11 +328,14 @@ class UserViewModel extends BaseViewModel {
         showToast(message, color: Colors.green);
         // var isSave = await saveVisit();
         setSuccess();
+        setPostSuccess();
         res = true;
         return true;
       }
       return res;
     } on NetworkException catch (e) {
+      setError();
+      setPostSuccess();
       showToast('${e}' 'NetworkException', color: Colors.red);
       onException(e);
       return false;
@@ -508,8 +554,12 @@ class UserViewModel extends BaseViewModel {
       return false;
     }
   }
+  void addItem(int id, History item) {
+    historyList.add(item);
+    notifyListeners();
+  }
 
-  Future<bool> submitComplaintRequestwithFile(String title, String description,
+  Future<bool> submitComplaintRequestwithFile(BuildContext context,String title, String description,
       String issue_type, String issue_priority,
       {var file, var flag}) async {
     setLoading();
@@ -519,7 +569,7 @@ class UserViewModel extends BaseViewModel {
       return res;
     }
     try {
-      await apiClient.multipartRequest("${EndPoints.submit_support_ticket}",
+      await apiClient.multipartRequest(context,"${EndPoints.submit_support_ticket}",
           headers: {
             'Content-Type': 'multipart/form-data',
             'Charset': 'utf-8',
@@ -543,3 +593,4 @@ class UserViewModel extends BaseViewModel {
     return res;
   }
 }
+enum PostResponse {Starting,Loading, Error, Success }

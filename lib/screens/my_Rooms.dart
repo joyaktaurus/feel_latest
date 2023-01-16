@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../util/styles.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
+import '../widgets/loading_animation.dart';
 
 class My_Rooms extends StatefulWidget {
   @override
@@ -28,10 +29,7 @@ class _My_RoomsState extends State<My_Rooms> {
         child: Column(
           children: [
             Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
               height: 100,
               child: Padding(
                 padding: const EdgeInsets.only(top: 40),
@@ -76,7 +74,7 @@ class _My_RoomsState extends State<My_Rooms> {
           return model.response == Response.Success &&
                   model.roomsList != null &&
                   model.roomsList.isNotEmpty
-              ? new ListView.builder(
+              ? ListView.builder(
                   itemCount: model.roomsList.length,
                   itemBuilder: (BuildContext ctxt, int Index) {
                     return Column(
@@ -95,13 +93,14 @@ class _My_RoomsState extends State<My_Rooms> {
                                   Container(
                                     width: 100,
                                     height: 120,
-                                    child: model.roomsList[Index].propertyImg != null
+                                    child: model.roomsList[Index].propertyImg !=
+                                            null
                                         ? Image.network(
-                                        "https://seowebdesign.in/feelathome/site/images/1/"
+                                            "https://seowebdesign.in/feelathome/site/images/1/"
                                             '${model.roomsList[Index].propertyImg}',
-                                        fit: BoxFit.fitHeight)
-                                        : Image.asset("assets/images/no_image.jpg",
-                                        fit: BoxFit.fitHeight),
+                                            fit: BoxFit.fitHeight)
+                                        : Image.asset("assets/images/nia.jpg",
+                                            fit: BoxFit.fitHeight),
                                   ),
                                   SizedBox(width: 10),
                                   Expanded(
@@ -113,19 +112,53 @@ class _My_RoomsState extends State<My_Rooms> {
                                           model.roomsList[Index].propertyName,
                                         ),
                                         SizedBox(height: 10),
-                                        Text(
-                                          "\$"
-                                          '${model.roomsList[Index].price}'
-                                          "/month",
-                                          style: TextStyle(color: colorAccent),
-                                        ),
+                                        model.roomsList[Index].price != null
+                                            ? SizedBox(
+                                                child: Row(children: [
+                                                  Text(
+                                                    "From",
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${model.roomsList[Index].currency_code}',
+                                                    style: TextStyle(
+                                                      color: colorAccent,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${model.roomsList[Index].price}',
+                                                    style: TextStyle(
+                                                      color: colorAccent,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "\/"
+                                                    '${model.roomsList[Index].price_per_pr}',
+                                                    style: TextStyle(
+                                                      color: colorAccent,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "\/"
+                                                    '${model.roomsList[Index].pricePer}',
+                                                    style: TextStyle(
+                                                      color: colorAccent,
+                                                    ),
+                                                  ),
+                                                ]),
+                                              )
+                                            : Container(),
                                         Text("Starting Date: "
                                             '${DateFormat('dd-MM-yyyy').format(model.roomsList[Index].propertyStartDate)}'),
                                         Text("Ending Date: "
                                             '${DateFormat('dd-MM-yyyy').format(model.roomsList[Index].propertyEndDate)}'),
                                         Text(
                                           "Tenure: "
-                                              '${(model.roomsList[Index].tenure_in_days)}'" Days",
+                                          '${(model.roomsList[Index].tenure_in_days)}'
+                                          " Days",
                                         ),
                                         SizedBox(height: 10),
                                       ],
@@ -146,7 +179,7 @@ class _My_RoomsState extends State<My_Rooms> {
                         child: Text("No Data"),
                       ),
                     )
-                  : Loading();
+                  : LoadingAnimation();
         }),
       ),
     );

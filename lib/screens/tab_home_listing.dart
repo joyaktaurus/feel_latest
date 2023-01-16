@@ -4,6 +4,7 @@ import 'package:feelathomeproject/screens/CollegedetailsView.dart';
 import 'package:feelathomeproject/screens/popular_property.dart';
 import 'package:feelathomeproject/screens/search_popup.dart';
 import 'package:feelathomeproject/util/background_home_page.dart';
+import 'package:feelathomeproject/widgets/loading_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../network/shared_preference_helper.dart';
@@ -29,7 +30,8 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
   int countryValue = 0;
   int countryValueId = 1;
   String _groupValue = '1';
-  bool _isVisible=false;
+  bool _isVisible = false;
+
   ValueChanged<String> _valueChangedHandler() {
     return (value) => setState(() {
           _groupValue = value;
@@ -64,7 +66,7 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                   Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: 15, right: 10, top: 20),
+                        margin: EdgeInsets.only(left: 10, right: 10, top: 20),
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           children: [
@@ -76,64 +78,69 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                                     Image.asset(
                                       'assets/images/logo_text.png',
                                       fit: BoxFit.fitHeight,
-                                      width: 100.0, height: 65.0,
+                                      width: 100.0,
+                                      height: 65.0,
                                     ),
                                   ],
                                 ),
-                         Visibility(
-                           visible: _isVisible,
-                           child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Login()),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                          },
-                                          child: Icon(Icons.person_outlined),
-                                          style: ButtonStyle(
-                                            shape: MaterialStateProperty.all(
-                                                CircleBorder()),
-                                            padding: MaterialStateProperty.all(
-                                                EdgeInsets.all(5)),
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    GreenBottom),
-                                            // <-- Button color
-                                            overlayColor: MaterialStateProperty
-                                                .resolveWith<Color>((states) {
-                                              if (states.contains(
-                                                  MaterialState.pressed))
-                                                return Colors
-                                                    .blue; // <-- Splash color
-                                            }),
-                                          ),
-                                        ),
-                         )
+                                Visibility(
+                                  visible: _isVisible,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) => Login()),
+                                          (Route<dynamic> route) => false);
+                                    },
+                                    child: Icon(Icons.person_outlined),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          CircleBorder()),
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.all(5)),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              GreenBottom),
+                                      // <-- Button color
+                                      overlayColor: MaterialStateProperty
+                                          .resolveWith<Color>((states) {
+                                        if (states
+                                            .contains(MaterialState.pressed))
+                                          return Colors
+                                              .blue; // <-- Splash color
+                                      }),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Feel At Home Offers You the",
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 15.5,
-                                    fontWeight: FontWeight.normal),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "Feel At Home Offers You the",
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.5,
+                                      fontWeight: FontWeight.normal),
+                                ),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text("Best Level Of Comfort !!",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.5,
-                                    fontWeight: FontWeight.normal),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7.0),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  "Best Level Of Comfort !!",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20.5,
+                                      fontWeight: FontWeight.normal),
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -144,11 +151,9 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                               height: 20,
                             ),
                             _CountrySelectionUi(),
-
                           ],
                         ),
                       ),
-
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
@@ -262,7 +267,9 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                 model.pptySearchList.isNotEmpty
             ? GridView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
-                itemCount: model.pptySearchList.length,
+                itemCount: model.pptySearchList.length > 4
+                    ? 4
+                    : model.pptySearchList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 15.0,
@@ -270,97 +277,109 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                     childAspectRatio: 2 / 3),
                 itemBuilder: (ctx, i) {
                   return GestureDetector(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(9.0),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0, 3),
-                              blurRadius: 3.0),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(9.0),
-                                  topRight: Radius.circular(9.0),
-                                ),
-                                color: Color(0xffe5e6ea),
-                              ),
-                              child: model.pptySearchList[i].image != null
-                                  ? Image.network(
+                    child: Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            model.pptySearchList[i].image != null
+                                ? SizedBox(
+                                 height: 150,
+                                  child: Image.network(
                                       "https://seowebdesign.in/feelathome/site/images/1/"
                                       '${model.pptySearchList[i].image[0]}',
-                                      fit: BoxFit.fitHeight)
-                                  : Image.asset("assets/images/no_image.jpg",
-                                      fit: BoxFit.fitHeight),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(9.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                    child: Text(
-                                  CheckIsNotNull(
-                                          model.pptySearchList[i].property_name)
-                                      ? model.pptySearchList[i].property_name
-                                      : " ",
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
-                                  maxLines: 2,
-                                )),
-                                model.pptySearchList[i].price != null
-                                    ? SizedBox(
-                                        child: Text.rich(
-                                          TextSpan(
-                                              text: "From",
+                                      fit: BoxFit.fitWidth),
+                                )
+                                : SizedBox(
+                                height: 150,
+                                  child: Image.asset("assets/images/nia.jpg",
+                                      fit: BoxFit.fitWidth),
+                                ),
+                            Padding(
+                              padding: const EdgeInsets.all(9.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(
+                                      child: Text(
+                                    CheckIsNotNull(
+                                            model.pptySearchList[i].property_name)
+                                        ? model.pptySearchList[i].property_name
+                                        : " ",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                    maxLines: 2,
+                                  )),
+                                  model.pptySearchList[i].price != null
+                                      ? SizedBox(
+                                          child: Column(children: [
+                                          Row(children: [
+                                            Text(
+                                              "From",
                                               style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.grey,
                                               ),
-                                              children: [
-                                                TextSpan(
-                                                  text: " \$"
-                                                      '${model.pptySearchList[i].price}',
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: GreenBottom,
-                                                  ),
+                                            ),
+                                            Text(
+                                              " "
+                                              '${model.pptySearchList[i].currency_code}',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: GreenBottom,
+                                              ),
+                                            ),
+                                            Text(
+                                              " "
+                                              '${model.pptySearchList[i].price}',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: GreenBottom,
+                                              ),
+                                            ),
+                                          ]),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 25),
+                                            child: Row(children: [
+                                              Text(
+                                                " \/"
+                                                '${model.pptySearchList[i].price_per_pr}',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey,
                                                 ),
-                                                TextSpan(
-                                                  text: "/week",
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.grey,
-                                                  ),
+                                              ),
+                                              Text(
+                                                " \/"
+                                                '${model.pptySearchList[i].price_per}',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey,
                                                 ),
-                                              ]),
-                                        ),
-                                      )
-                                    : Container(),
-                                SizedBox(
-                                    child: Text(
-                                  " ",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                )),
-                              ],
+                                              ),
+                                            ]),
+                                          ),
+                                        ]))
+                                      : Container(),
+                                  SizedBox(
+                                      child: Text(
+                                    " ",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  )),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -387,7 +406,7 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
                       child: Text("No Data"),
                     ),
                   )
-                : Loading();
+                : LoadingAnimation();
       }),
     );
   }
@@ -438,16 +457,16 @@ class _Tab_home_listingState extends State<Tab_home_listing> {
     if (isLoggedIn != null) {
       if (isLoggedIn == "true") {
         setState(() {
-          _isVisible =false;
+          _isVisible = false;
         });
       } else {
         setState(() {
-          _isVisible =true;
+          _isVisible = true;
         });
       }
     } else {
       setState(() {
-        _isVisible =true;
+        _isVisible = true;
       });
     }
   }

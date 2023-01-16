@@ -5,7 +5,6 @@ class AboutDataModel {
   String terms_and_conditions;
   String privacy_policy;
 
-
   AboutDataModel({this.message,this.about, this.terms_and_conditions,this.privacy_policy});
 
   AboutDataModel.fromJson(Map<String, dynamic> json) {

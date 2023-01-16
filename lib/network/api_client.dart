@@ -8,6 +8,7 @@ import 'package:feelathomeproject/util/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../screens/complaint_list.dart';
 import 'network_exceptions.dart';
 
 class ApiClient {
@@ -234,7 +235,7 @@ class ApiClient {
   }
 
   // ignore: missing_return
-  Future<dynamic> multipartRequest(String url,
+  Future<bool> multipartRequest(BuildContext context,String url,
       {Map<String, String> headers,
       Map<String, String> body,
       filePath,
@@ -274,6 +275,8 @@ class ApiClient {
                 Map<String, dynamic> data = jsonDecode(response.body);
                 String message = data["message"];
                 showToast(message, color: Colors.green);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ComplaintList()));
               } else if (statusCode < 200 || statusCode > 400 || json == null) {
                 throw NetworkException(
                     message: "Error fetching data from server", code: statusCode);
@@ -283,6 +286,7 @@ class ApiClient {
           })
           .catchError((err) => print('error : ' + err.toString()))
           .whenComplete(() {});
+
       // var response = request.send();
       // return response;
     } on NetworkException catch (e) {

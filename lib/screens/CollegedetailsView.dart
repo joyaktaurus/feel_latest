@@ -74,13 +74,18 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                   if (model.response == Response.Success &&
                       model.pptySearchList != null &&
                       model.pptySearchList.isNotEmpty) {
-                  return Column(
+                    return Column(
                       children: [
                         Container(
                           child: Column(
                             children: [
                               CarouselSlider.builder(
-                                itemCount: 3,
+                                itemCount: model.pptySearchList[widget.id].image
+                                            ?.length !=
+                                        null
+                                    ? model
+                                        .pptySearchList[widget.id].image.length
+                                    : 1,
                                 options: CarouselOptions(
                                     autoPlay: false,
                                     onPageChanged: (index, reason) {
@@ -92,11 +97,18 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                     (BuildContext context, int index, _) {
                                   return MyImageView(model
                                               .pptySearchList[widget.id]
-                                              .image !=
+                                              .image
+                                              ?.length !=
                                           null
-                                      ? model
-                                      .pptySearchList[widget.id]
-                                      .image[index]
+                                      ? model.pptySearchList[widget.id]
+                                                      .image[index] !=
+                                                  null ||
+                                              model.pptySearchList[widget.id]
+                                                      .image[index] !=
+                                                  "null"
+                                          ? model.pptySearchList[widget.id]
+                                              .image[index]
+                                          : null
                                       : null);
                                 },
                               ),
@@ -357,32 +369,56 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                               ),
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: Text.rich(
-                                  TextSpan(
-                                      text: "From",
+                                child: Column(children: [
+                                  Row(children: [
+                                    Text(
+                                      "From",
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey,
                                       ),
-                                      children: [
-                                        TextSpan(
-                                          text: " \$"
-                                              '${model.pptySearchList[widget.id].price}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600,
-                                            color: GreenBottom,
-                                          ),
+                                    ),
+                                    Text(
+                                      " "
+                                      '${model.pptySearchList[widget.id].currency_code}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: GreenBottom,
+                                      ),
+                                    ),
+                                    Text(
+                                      " "
+                                      '${model.pptySearchList[widget.id].price}',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: GreenBottom,
+                                      ),
+                                    ),
+                                  ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 25),
+                                    child: Row(children: [
+                                      Text(
+                                        " \/"
+                                        '${model.pptySearchList[widget.id].price_per_pr}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
                                         ),
-                                        TextSpan(
-                                          text: "/week",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey,
-                                          ),
+                                      ),
+                                      Text(
+                                        " \/"
+                                        '${model.pptySearchList[widget.id].price_per}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
                                         ),
-                                      ]),
-                                ),
+                                      ),
+                                    ]),
+                                  ),
+                                ]),
                               ),
                               SizedBox(
                                 height: 10,
@@ -475,7 +511,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                   color: Colors.white,
                                   fit: BoxFit.scaleDown,
                                 ),
-                                Text("Shower Rooms",
+                                Text("Full Washrooms",
                                     style: new TextStyle(
                                         color: Colors.white,
                                         fontSize: 10.0,
@@ -484,6 +520,33 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                     model.pptySearchList[widget.id].shower !=
                                             null
                                         ? model.pptySearchList[widget.id].shower
+                                        : "0",
+                                    style: new TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.normal)),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Image.asset(
+                                  "assets/images/bathroom.png",
+                                  height: 15.0,
+                                  width: 20.0,
+                                  color: Colors.white,
+                                  fit: BoxFit.scaleDown,
+                                ),
+                                Text("Half Washrooms",
+                                    style: new TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.normal)),
+                                Text(
+                                    model.pptySearchList[widget.id]
+                                                .shower_half !=
+                                            null
+                                        ? model.pptySearchList[widget.id]
+                                            .shower_half
                                         : "0",
                                     style: new TextStyle(
                                         color: Colors.white,
@@ -757,13 +820,17 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                             var res = false;
                                             res = await _userViewModel
                                                 .PostEnquiry(
-                                                model
-                                                    .pptySearchList[widget.id]
-                                                    .id !=null
-                                                    ? num.tryParse(   model
-                                                    .pptySearchList[widget.id]
-                                                    .id)?.toInt()
-                                                    : 1,
+                                                    model
+                                                                .pptySearchList[
+                                                                    widget.id]
+                                                                .id !=
+                                                            null
+                                                        ? num.tryParse(model
+                                                                .pptySearchList[
+                                                                    widget.id]
+                                                                .id)
+                                                            ?.toInt()
+                                                        : 1,
                                                     _username,
                                                     _phone,
                                                     _email,
@@ -869,7 +936,6 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
             prefixIcon: Icon(Icons.message, color: Colors.grey),
             labelText: 'Enter A Message Here',
             hintStyle: TextStyle(color: Colors.grey),
-
             enabledBorder: myinputborder(),
             focusedBorder: myfocusborder(),
             border: OutlineInputBorder(
@@ -989,8 +1055,7 @@ class MyImageView extends StatelessWidget {
                   "https://seowebdesign.in/feelathome/site/images/1/"
                   '${imgPath}',
                   fit: BoxFit.cover)
-              : Image.asset("assets/images/no_image.jpg",
-                  fit: BoxFit.fitHeight),
+              : Image.asset("assets/images/nia.jpg", fit: BoxFit.fitHeight),
         ));
   }
 }

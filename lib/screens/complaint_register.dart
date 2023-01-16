@@ -1,4 +1,5 @@
 // @dart=2.9
+import 'package:feelathomeproject/screens/complaint_list.dart';
 import 'package:feelathomeproject/util/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
@@ -17,12 +18,12 @@ class ComplaintRegistration extends StatefulWidget {
 class _ComplaintRegistrationState extends State<ComplaintRegistration> {
   String _selectedCountryCode;
   final formKey = new GlobalKey<FormState>();
-  static String _comp_title, _summary;
+  static String _summary,_comp_title=" ";
   List<String> _countryCodes = ['+91', '+23'];
   var countryDropDown;
   DateTime _selectedDate;
   UserViewModel _userViewModel;
-  String complaint_type_dropdownValue = 'Select complaint type';
+  String complaint_type_dropdownValue = 'Select issue type';
   String complaint_priority_level_dropdownValue = 'Priority Level';
   String fileName;
   var _image;
@@ -31,10 +32,10 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
   // To show Selected Item in Text.
   String holder = '';
   String holder1 = '';
-  int customerproperty_id;
+  int customerproperty_id=0;
 
   List<String> complaint_type = [
-    'Select complaint type',
+    'Select issue type',
     'Clogging(Sink, bathroom etc)',
     'Water Leakage',
     'Heater / AC not working',
@@ -142,7 +143,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
             child: Container(
               child: const Text.rich(
                 TextSpan(
-                    text: "COMPLAINT REGISTRATION",
+                    text: "SUPPORT TICKET",
                     style: TextStyle(
                         color: Colors.lightBlue,
                         fontSize: 20.5,
@@ -251,7 +252,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                       _comp_title = value;
                     },
                     decoration: InputDecoration(
-                      labelText: 'Complaint Title',
+                      labelText: 'Issue Title',
                     ),
                   ),
                 ),
@@ -306,7 +307,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Complaint Image",
+                    "Attachments",
                     style: TextStyle(
                         fontWeight: FontWeight.normal, fontSize: 18.0),
                   ),
@@ -417,7 +418,8 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                                 print(customerproperty_id);
                               });
                             },
-                            value: customerproperty_id,
+                            value: null,
+                            //customerproperty_id,
                             items: model.customerPrtyList.map((CustomerProperties) {
                               return DropdownMenuItem(
                                 child: Text(
@@ -464,24 +466,33 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                         ],
                       ),
                       onPressed: () async {
+                        print("customerproperty_id");
+                        print(customerproperty_id);
                         if (complaint_type_dropdownValue ==
                             "Select complaint type") {
-                          showToast('please select complaint type',
+                          showToast('please select issue type',
                               color: Colors.red);
-                        } else {
+                        } else
+                          if (customerproperty_id ==
+                            0) {
+                          showToast('please select your property',
+                              color: Colors.red);
+                        }else  {
                           if (formKey.currentState.validate()) {
                             var res = false;
                             res = await Provider.of<UserViewModel>(context,
                                     listen: false)
-                                .submitComplaintRequestwithFile(_comp_title,_summary,
+                                .submitComplaintRequestwithFile(context,_comp_title,_summary,
                                     complaint_type_dropdownValue,complaint_priority_level_dropdownValue,
                                     file: fileName);
+
+                            // WidgetsBinding.instance.addPostFrameCallback((_) =>
+                            //     Provider.of<UserViewModel>(context, listen: false).getComplaintList());
                             // res = await _userViewModel.PostComplaint(
                             // _comp_title, _summary, dropdownValue,fileName);
                             if (res) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) =>
-                                  Provider.of<UserViewModel>(context, listen: false).getComplaintList());
-                              formKey.currentState.reset();
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => ComplaintList()));
                             }
                           }
                         }

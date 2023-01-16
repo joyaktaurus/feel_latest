@@ -9,6 +9,7 @@ import '../util/CustomAlertDialog.dart';
 import '../util/styles.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
+import '../widgets/loading_animation.dart';
 import '../widgets/loading_widget.dart';
 
 class ComplaintList extends StatefulWidget {
@@ -52,7 +53,7 @@ class _ComplaintListState extends State<ComplaintList> {
               child: Container(
                 child: Text.rich(
                   TextSpan(
-                      text: "COMPLAINTS",
+                      text: "SUPPORT TICKET",
                       style: TextStyle(
                           color: Colors.lightBlue,
                           fontSize: 20.5,
@@ -222,9 +223,9 @@ class _ComplaintListState extends State<ComplaintList> {
                                   ),
                                   Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
-                                          model.supportList[Index]?.description ??
-                                              "")),
+                                      child: Text(model.supportList[Index]?.issue_type=="Other"?
+                                          model.supportList[Index]?.title ??
+                                              "":model.supportList[Index].issue_type)),
                                   model.supportList[Index].status == "closed"
                                       ? Column(
                                           children: [
@@ -289,7 +290,7 @@ class _ComplaintListState extends State<ComplaintList> {
                         child: Text("No Data"),
                       ),
                     )
-                  : Loading();
+                  : LoadingAnimation();
         }),
       ),
     );

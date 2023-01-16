@@ -8,6 +8,7 @@ import '../network/shared_preference_helper.dart';
 import '../util/styles.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
+import '../widgets/loading_animation.dart';
 import '../widgets/loading_widget.dart';
 import 'map_view.dart';
 
@@ -97,7 +98,8 @@ class _NotificationPageState extends State<NotificationPage> {
               Consumer<UserViewModel>(builder: (contextModel, model, child) {
                 return model.response == Response.Success &&
                         model.notifDataModel.notification_status != null &&
-                        model.notifDataModel.notification_status.isNotEmpty
+                        model.notifDataModel.notification_status.isNotEmpty &&
+                        model.notifDataModel.notification_status != "null"
                     ? Switch(
                         value: Provider.of<UserViewModel>(context)
                                     .notifDataModel
@@ -133,7 +135,27 @@ class _NotificationPageState extends State<NotificationPage> {
                     : Switch(
                         value: isSwitched,
                         //  value: isSwitched,
-                        onChanged: (value) async {},
+                        onChanged: (value) async {
+                          setState(() {
+                            isSwitched = value;
+                            if (isSwitched) {
+                              Provider.of<UserViewModel>(context, listen: false)
+                                  .toggleNotification(true);
+                              print('Noti: $value');
+                              statusNotifvalue = 1;
+                            } else {
+                              Provider.of<UserViewModel>(context, listen: false)
+                                  .toggleNotification(false);
+                              print('Noti: $value');
+                              statusNotifvalue = 0;
+                            }
+                            print(isSwitched);
+                          });
+                          var res = false;
+                          res = await _userViewModel.PostNotificationStatus(
+                              statusNotifvalue);
+                          if (res) {}
+                        },
                         activeTrackColor: GreenBottom,
                         activeColor: Colors.white,
                       );
@@ -183,9 +205,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      model.notificationList[Index]
-                                          ?.type ??
-                                          "",
+                                      model.notificationList[Index]?.type ?? "",
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 15.0),
@@ -214,16 +234,18 @@ class _NotificationPageState extends State<NotificationPage> {
                           )),
                     );
                   })
-              : model.notificationList.isEmpty && model.response == Response.Success
+              : model.notificationList.isEmpty &&
+                      model.response == Response.Success
                   ? Container(
                       margin: EdgeInsets.only(top: 20),
                       child: Center(
                         child: Text("No Data"),
                       ),
                     )
-                  : Loading();
+                  : LoadingAnimation();
         }),
       ),
     );
   }
 }
+

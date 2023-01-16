@@ -31,8 +31,11 @@ class PropertyListingData {
   String description;
   String price;
   String price_per;
+  String price_per_pr;
+  String currency_code;
   String living;
   String shower;
+  String shower_half;
   String kitchen;
   String parking;
   String nearest_facility;
@@ -58,8 +61,11 @@ class PropertyListingData {
       this.description,
       this.price,
       this.price_per,
+      this.price_per_pr,
+      this.currency_code,
       this.living,
       this.shower,
+      this.shower_half,
       this.kitchen,
       this.parking,
       this.nearest_facility,
@@ -85,8 +91,11 @@ class PropertyListingData {
     description = json['description'];
     price = json['price'];
     price_per = json['price_per'];
+    price_per_pr = json['price_per_pr'];
+    currency_code = json['currency_code'];
     living = json['living'];
     shower = json['shower'];
+    shower_half = json['shower_half'];
     kitchen = json['kitchen'];
     parking = json['parking'];
     nearest_facility = json['nearest_facility'];
@@ -120,8 +129,11 @@ class PropertyListingData {
     data['description'] = this.description;
     data['price'] = this.price;
     data['price_per'] = this.price_per;
+    data['price_per_pr'] = this.price_per_pr;
+    data['currency_code'] = this.currency_code;
     data['living'] = this.living;
     data['shower'] = this.shower;
+    data['shower_half'] = this.shower_half;
     data['kitchen'] = this.kitchen;
     data['parking'] = this.parking;
     data['nearest_facility'] = this.nearest_facility;

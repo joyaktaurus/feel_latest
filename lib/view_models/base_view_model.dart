@@ -20,10 +20,13 @@ class BaseViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     setError();
   }
 
+
+
   setLoading() {
     response = Response.Loading;
     notifyListeners();
   }
+
 
   setSuccess() {
     response = Response.Success;
@@ -34,6 +37,7 @@ class BaseViewModel with ChangeNotifier, DiagnosticableTreeMixin {
     response = Response.Success;
     notifyListeners();
   }
+
 
   showToast(String message, {Color color}) {
     Fluttertoast.showToast(
@@ -48,3 +52,4 @@ class BaseViewModel with ChangeNotifier, DiagnosticableTreeMixin {
 }
 
 enum Response { Loading, Error, Success }
+

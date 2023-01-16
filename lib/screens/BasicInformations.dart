@@ -1,4 +1,5 @@
 // @dart=2.9
+import 'package:feelathomeproject/widgets/loading_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -126,7 +127,7 @@ class _BasicInformationsState extends State<BasicInformations> {
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       hintText: "eg : Jhony",
-                      labelText: 'Passport First Name',
+                      labelText: 'First Name',
                     ),
                   ),
                   SizedBox(
@@ -151,7 +152,7 @@ class _BasicInformationsState extends State<BasicInformations> {
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       hintText: "eg : Marcos",
-                      labelText: 'Passport Last Name',
+                      labelText: 'Last Name',
                     ),
                   ),
                   SizedBox(
@@ -323,7 +324,7 @@ class _BasicInformationsState extends State<BasicInformations> {
                   ),*/
                 ],
               )
-              : Loading();
+              : LoadingAnimation();
             }),
           ),
         ),

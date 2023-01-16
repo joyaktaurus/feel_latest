@@ -12,6 +12,7 @@ import '../util/styles.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/user_view_model.dart';
 import '../widgets/loading_widget.dart';
+import 'complaint_list.dart';
 import 'map_view.dart';
 
 class ChatRoom extends StatefulWidget {
@@ -55,7 +56,7 @@ class _ChatRoomState extends State<ChatRoom> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
-          "COMPLAINTS",
+          "SUPPORT TICKETS",
           style: TextStyle(
               color: Colors.lightBlue,
               fontSize: 20.5,
@@ -197,6 +198,10 @@ class _ChatRoomState extends State<ChatRoom> {
                                     supportList.id,
                                     rate,
                                     myController.text.toString());
+                                if (res) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ComplaintList()));
+                                }
                               }
                             },
                           ),
@@ -249,6 +254,10 @@ class _ChatRoomState extends State<ChatRoom> {
                     if (ReplayController.text.toString().isNotEmpty) {
                       var res = false;
                       res = await _userViewModel.PostReply(name,ReplayController.text.toString(), supportList.id);
+                      if (res) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ComplaintList()));
+                      }
                     }else{
                       showToast("Please enter your comments",color: Colors.red);
                     }
