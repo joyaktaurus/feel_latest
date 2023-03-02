@@ -117,7 +117,8 @@ class History {
         this.fk_assignee_id,
         this.name,
         this.is_customer,
-        this.replied_on});
+        this.replied_on}
+      );
 
   History.fromJson(Map<String, dynamic> json) {
     id = json['id'];

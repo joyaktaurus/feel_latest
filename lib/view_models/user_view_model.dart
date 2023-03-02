@@ -371,7 +371,8 @@ class UserViewModel extends BaseViewModel {
   }
 
   Future<bool> PostEnquiry(int id, String name, String phone, String email,
-      String msg, String city, String nppl) async {
+      String msg, String city, String nppl, String university, String campus,
+      String intake, String date, String u_other, String c_other, String travel_date) async {
     var res = false;
     try {
       Map body = {
@@ -383,6 +384,9 @@ class UserViewModel extends BaseViewModel {
         "email": email,
         "msg": msg,
         "no_of_people": nppl,
+        "u_other" : u_other,
+        "c_other" : c_other,
+        "travel_date" : travel_date
       };
       Map<String, dynamic> data =
           await apiClient.post("${EndPoints.submit_enquiry}", body: body);

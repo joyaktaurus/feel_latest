@@ -3,7 +3,6 @@ import 'package:camerawesome/models/capture_modes.dart';
 import 'package:camerawesome/models/orientations.dart';
 import 'package:feelathomeproject/camera/take_photo_button.dart';
 import 'package:flutter/material.dart';
-
 import 'camera_buttons.dart';
 
 class BottomBarWidget extends StatelessWidget {

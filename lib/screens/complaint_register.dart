@@ -1,12 +1,13 @@
 // @dart=2.9
-import 'package:feelathomeproject/screens/complaint_list.dart';
-import 'package:feelathomeproject/util/widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
 import 'package:provider/provider.dart';
 
+
 import '../camera/cameraawesome.dart';
 import '../util/styles.dart';
+import '../util/widgets.dart';
 import '../view_models/user_view_model.dart';
 
 class ComplaintRegistration extends StatefulWidget {
@@ -32,7 +33,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
   // To show Selected Item in Text.
   String holder = '';
   String holder1 = '';
-  int customerproperty_id=0;
+  String customerproperty_id= "Select Property";
 
   List<String> complaint_type = [
     'Select issue type',
@@ -82,6 +83,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
       ),
       context: context,
       source: source,
+
       barrierDismissible: true,
       cameraIcon: const Icon(
         Icons.camera_alt,
@@ -210,7 +212,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                               complaint_type_dropdownValue = data;
                               int index = complaint_type.indexOf(data);
                               complaint_priority_level_dropdownValue =
-                                  complaint_priority[index];
+                              complaint_priority[index];
                               if(data=="Other"){
                                 setState(() {
                                   _isVisible =true;
@@ -296,8 +298,8 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                           ),
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(color: Colors.white, width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(2)),
-                      )),
+                            borderRadius: BorderRadius.all(Radius.circular(2)),
+                          )),
                     ),
                   ],
                 ),
@@ -320,10 +322,10 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                         padding: MaterialStateProperty.all<EdgeInsets>(
                             EdgeInsets.all(15)),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(0),
-                                    side: BorderSide(color: Colors.black12)))),
+                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                                side: BorderSide(color: Colors.black12)))),
                     onPressed: () async {
                       await showDialog(
                           context: context,
@@ -336,9 +338,10 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                                       var result = await Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => CamAwesome(
-                                                  sellerId: 8734,
-                                                  fromPage: 'listUpload')));
+                                            builder: (context) => CamAwesome(
+                                                sellerId: 8734,
+                                                fromPage: 'listUpload')
+                                          ));
 
                                       setState(() {
                                         if (result != null) {
@@ -403,40 +406,48 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                       child: Padding(
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: new DropdownButtonHideUnderline(
-                          child: new DropdownButton(
+                          child: new DropdownButton<String>(
                             isExpanded: true,
                             hint: Text(
-                              "Select property name",
+                              customerproperty_id,
                               style: TextStyle(
                                 fontSize: 18.0,
                               ),
                             ),
-                            onChanged: (int changedValue) {
-                              customerproperty_id = changedValue;
+
+                            onChanged: (String change) {
+
+                              customerproperty_id=change;
                               setState(() {
+                                customerproperty_id=change;
                                 customerproperty_id;
+
                                 print(customerproperty_id);
+                                print(model.customerPrtyList.length);
                               });
                             },
-                            value: null,
-                            //customerproperty_id,
+                          //  value: null,
                             items: model.customerPrtyList.map((CustomerProperties) {
-                              return DropdownMenuItem(
+                              return DropdownMenuItem<String>(
                                 child: Text(
                                   CustomerProperties.propertyName,
                                   style: TextStyle(
                                     fontSize: 15.0,
                                   ),
                                 ),
-                                value: CustomerProperties.id,
+                                value: CustomerProperties.propertyName,
+
                               );
+
                             }).toList(),
+                            value:model.customerPrtyList.length==null? customerproperty_id:null,
+
                           ),
                         ),
                       ),
                     ),
                   );
-                 }),
+                }),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -456,7 +467,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                         children: <Widget>[
                           new Padding(
                             padding:
-                                const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                            const EdgeInsets.only(top: 5.0, bottom: 5.0),
                             child: Text("SUBMIT",
                                 style: TextStyle(
                                     fontFamily: 'Roboto',
@@ -473,7 +484,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                           showToast('please select issue type',
                               color: Colors.red);
                         } else
-                          if (customerproperty_id ==
+                        if (customerproperty_id ==
                             0) {
                           showToast('please select your property',
                               color: Colors.red);
@@ -481,10 +492,10 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                           if (formKey.currentState.validate()) {
                             var res = false;
                             res = await Provider.of<UserViewModel>(context,
-                                    listen: false)
+                                listen: false)
                                 .submitComplaintRequestwithFile(context,_comp_title,_summary,
-                                    complaint_type_dropdownValue,complaint_priority_level_dropdownValue,
-                                    file: fileName);
+                                complaint_type_dropdownValue,complaint_priority_level_dropdownValue,
+                                file: fileName);
 
                             // WidgetsBinding.instance.addPostFrameCallback((_) =>
                             //     Provider.of<UserViewModel>(context, listen: false).getComplaintList());
