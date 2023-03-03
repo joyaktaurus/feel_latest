@@ -1,6 +1,8 @@
 // @dart=2.9
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:feelathomeproject/model/collage_model.dart';
 import 'package:feelathomeproject/model/propertyListingModel.dart';
+import 'package:feelathomeproject/util/customform.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +38,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
       _date,
       _u_other,
       _c_other,
-     _travel_date;
+      _travel_date;
   final formKey = new GlobalKey<FormState>();
   UserViewModel _userViewModel;
   String itemName;
@@ -69,7 +71,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
   }
 
   bool _isVisible = false;
-
+  static String _summary,_comp_title=" ";
   ///////////////////////////
 
   // List<String> complaint_type_dropdownValue = [
@@ -192,7 +194,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                   model.pptySearchList != null &&
                   model.pptySearchList.isNotEmpty
               ? Expanded(
-                child: Column(
+                  child: Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -227,15 +229,18 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                                         MapPage(
                                                             num.tryParse(model
                                                                     .pptySearchList[
-                                                                        widget.id]
+                                                                        widget
+                                                                            .id]
                                                                     .lat)
                                                                 ?.toDouble(),
                                                             num.tryParse(model
                                                                     .pptySearchList[
-                                                                        widget.id]
+                                                                        widget
+                                                                            .id]
                                                                     .lng)
                                                                 ?.toDouble())))
-                                            : showToast('Location Not Available',
+                                            : showToast(
+                                                'Location Not Available',
                                                 color: Colors.red);
                                       },
                                       child: Image.asset(
@@ -306,10 +311,11 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    model.pptySearchList[widget.id].description !=
+                                    model.pptySearchList[widget.id]
+                                                .description !=
                                             null
-                                        ? model
-                                            .pptySearchList[widget.id].description
+                                        ? model.pptySearchList[widget.id]
+                                            .description
                                         : " ",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -348,7 +354,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                           fontSize: 10.0,
                                           fontWeight: FontWeight.normal)),
                                   Text(
-                                      model.pptySearchList[widget.id].bed != null
+                                      model.pptySearchList[widget.id].bed !=
+                                              null
                                           ? model.pptySearchList[widget.id].bed
                                           : "0",
                                       style: new TextStyle(
@@ -374,7 +381,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                   Text(
                                       model.pptySearchList[widget.id].living !=
                                               null
-                                          ? model.pptySearchList[widget.id].living
+                                          ? model
+                                              .pptySearchList[widget.id].living
                                           : "0",
                                       style: new TextStyle(
                                           color: Colors.white,
@@ -399,7 +407,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                   Text(
                                       model.pptySearchList[widget.id].shower !=
                                               null
-                                          ? model.pptySearchList[widget.id].shower
+                                          ? model
+                                              .pptySearchList[widget.id].shower
                                           : "0",
                                       style: new TextStyle(
                                           color: Colors.white,
@@ -475,7 +484,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                           child: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -487,7 +497,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                         fit: BoxFit.scaleDown,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 5.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
                                         child: Text("Fully furnished ",
                                             style: new TextStyle(
                                                 color: Colors.white,
@@ -506,7 +517,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                         fit: BoxFit.scaleDown,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 5.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
                                         child: Text("Communal laundry",
                                             style: new TextStyle(
                                                 color: Colors.white,
@@ -525,7 +537,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                         fit: BoxFit.scaleDown,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 5.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
                                         child: Text("Car Parking",
                                             style: new TextStyle(
                                                 color: Colors.white,
@@ -540,7 +553,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                 height: 10,
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -552,7 +566,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                         fit: BoxFit.scaleDown,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 5.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
                                         child: Text("No Smoking",
                                             style: new TextStyle(
                                                 color: Colors.white,
@@ -571,7 +586,8 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                         fit: BoxFit.scaleDown,
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 5.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
                                         child: Text("Entertainment Room",
                                             style: new TextStyle(
                                                 color: Colors.white,
@@ -657,9 +673,62 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                         top: 16.0, right: 8.0, left: 8.0),
                                     child: UnivList()),
                                 Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0, right: 8.0, left: 8.0),
+                                  child: Visibility(
+                                    visible: _isVisible,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Container(
+                                        height: 50,
+                                        width: 400,
+                                        color: LightGrey,
+                                        child: TextFormField(
+
+                                          keyboardType: TextInputType.name,
+                                          onSaved: (value) => _comp_title = value,
+                                          onChanged: (value) {
+                                            _comp_title = value;
+                                          },
+                                          decoration: InputDecoration(border: InputBorder.none,
+                                            labelText: '  Type Other University',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                Padding(
                                     padding: const EdgeInsets.only(
                                         top: 16.0, right: 8.0, left: 8.0),
                                     child: CamList()),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0, right: 8.0, left: 8.0),
+                                  child: Visibility(
+                                    visible: _isVisible,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Container(
+                                        height: 50,
+                                        width: 400,
+                                        color: LightGrey,
+                                        child: TextFormField(
+
+                                          keyboardType: TextInputType.name,
+                                          onSaved: (value) => _summary = value,
+                                          onChanged: (value) {
+                                            _summary = value;
+                                          },
+                                          decoration: InputDecoration(border: InputBorder.none,
+                                            labelText: '  Type Other Campus',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                                 Padding(
                                     padding: const EdgeInsets.only(
                                         top: 16.0, right: 8.0, left: 8.0),
@@ -721,33 +790,31 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                               if (formKey.currentState
                                                   .validate()) {
                                                 var res = false;
-                                                res = await _userViewModel
-                                                    .PostEnquiry(
-                                                  model
-                                                              .pptySearchList[
-                                                                  widget.id]
-                                                              .id !=
-                                                          null
-                                                      ? num.tryParse(model
-                                                              .pptySearchList[
-                                                                  widget.id]
-                                                              .id)
-                                                          ?.toInt()
-                                                      : 1,
-                                                  _username,
-                                                  _phone,
-                                                  _email,
-                                                  _message,
-                                                  _city,
-                                                  _noppl,
-                                                  _university,
-                                                  _campus,
-                                                  _intake,
-                                                  _date,
-                                                  _u_other,
-                                                  _c_other,
-                                                  _travel_date
-                                                );
+                                                res = await _userViewModel.PostEnquiry(
+                                                    model
+                                                                .pptySearchList[
+                                                                    widget.id]
+                                                                .id !=
+                                                            null
+                                                        ? num.tryParse(model
+                                                                .pptySearchList[
+                                                                    widget.id]
+                                                                .id)
+                                                            ?.toInt()
+                                                        : 1,
+                                                    _username,
+                                                    _phone,
+                                                    _email,
+                                                    _message,
+                                                    _city,
+                                                    _noppl,
+                                                    _university,
+                                                    _campus,
+                                                    _intake,
+                                                    _date,
+                                                    _u_other,
+                                                    _c_other,
+                                                    _travel_date);
                                                 if (res) {
                                                   formKey.currentState.reset();
                                                 }
@@ -766,7 +833,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                       ),
                     ],
                   ),
-              )
+                )
               : model.pptySearchList.isNotEmpty &&
                       model.response == Response.Success
                   ? Container(
@@ -783,56 +850,12 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                     );
         }));
   }
-
-  // Widget UnivvList(){
-  //   return  Consumer<UserViewModel>(builder: (contextModel, model, child) {
-  //     return ClipRRect(
-  //         borderRadius: BorderRadius.circular(20),
-  //         child: Container(
-  //             color: LightGrey,
-  //           child: new DropdownButtonHideUnderline(
-  //             child: new DropdownButton<String>(
-  //               isExpanded: true,
-  //               onChanged: (String data) {
-  //                 setState(() {
-  //                   complaint_type_dropdownValue = data;
-  //                   int index = complaint_type.indexOf(data);
-  //                   complaint_priority_level_dropdownValue =
-  //                   complaint_priority[index];
-  //                   if(data=="Other"){
-  //                     setState(() {
-  //                       _isVisible =true;
-  //                     });
-  //                   }else{
-  //                     setState(() {
-  //                       _isVisible =false;
-  //                     });
-  //                   }
-  //                 });
-  //               },
-  //               value: complaint_type_dropdownValue,
-  //               items: complaint_type
-  //                   .map<DropdownMenuItem<String>>((String value) {
-  //                 return DropdownMenuItem<String>(
-  //                   value: value,
-  //                   child: Text(
-  //                     value,
-  //                     style: TextStyle(
-  //                       fontSize: 15.0,
-  //                     ),
-  //                   ),
-  //                 );
-  //               }).toList(),
-  //             ),
-  //           ),
-  //
-  //         ),
-  //     );
-  //   }
-  //   );
-  // }
   Widget UnivList() {
     return Consumer<UserViewModel>(builder: (contextModel, model, child) {
+      if(model.collageList.first.college_name!='Select university'){
+        model.collageList.insert(
+            0, CollegeData(college_name: 'Select university'));
+        model.collageList.insert(1, CollegeData(college_name: 'other'));}
       return ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
@@ -848,13 +871,12 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                     fontSize: 16.0,
                   ),
                 ),
-
                 onChanged: (String change) {
                   //  university_id = change;
                   setState(() {
                     university_id = change;
                     university_id;
-                    if (change == _c_other) {
+                    if (change == "other") {
                       setState(() {
                         _isVisible = true;
                       });
@@ -889,16 +911,15 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
 
   Widget DatePick() {
     return GestureDetector(
-      onTap: () => _selectDate(context),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20), color: LightGrey),
-        width: 400,
-        height: 50,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
+        onTap: () => _selectDate(context),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20), color: LightGrey),
+          width: 400,
+          height: 50,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(children: [
               Icon(
                 Icons.calendar_month_outlined,
                 color: Colors.grey,
@@ -908,15 +929,36 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                 "${selectedDate.day}-${selectedDate.month}-${selectedDate.year}",
                 style: TextStyle(color: Colors.black54, fontSize: 16),
               ),
-            ],
+            ]),
           ),
-        ),
-      ),
-    );
+        ));
   }
+
+  final date = TextFormField(
+    autofocus: false,
+    //validator: validateEmail,
+    onSaved: (value) => _date = value,
+    onChanged: (value) {
+      _date = value;
+    },
+    validator: (value) {
+      if (value.isEmpty) {
+        return "Enter Date";
+      } else {
+        return null;
+      }
+    },
+    //decoration: buildInputDecoration("Username", Icons.email),
+    decoration:
+        buildInputDecorationDetails("Date", Icons.calendar_month_outlined),
+  );
 
   Widget CamList() {
     return Consumer<UserViewModel>(builder: (contextModel, model, child) {
+      if(model.campusList.first.campus_name!='Select university'){
+        model.campusList.insert(
+            0, CampusData(campus_name: 'Select university'));
+        model.campusList.insert(1, CampusData(campus_name: 'other'));}
       return ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
@@ -938,7 +980,15 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                   setState(() {
                     campus_id = change;
                     campus_id;
-
+                    if (change == "other") {
+                      setState(() {
+                        _isVisible = true;
+                      });
+                    } else {
+                      setState(() {
+                        _isVisible = false;
+                      });
+                    }
                     print(campus_id);
                     print(model.campusList.length);
                   });
@@ -1142,24 +1192,24 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
     //decoration: buildInputDecoration("Username", Icons.email),
     decoration: buildInputDecorationDetails("Intake", Icons.people),
   );
-  final date = TextFormField(
-    autofocus: false,
-    //validator: validateEmail,
-    onSaved: (value) => _date = value,
-    onChanged: (value) {
-      _date = value;
-    },
-    validator: (value) {
-      if (value.isEmpty) {
-        return "Enter Date";
-      } else {
-        return null;
-      }
-    },
-    //decoration: buildInputDecoration("Username", Icons.email),
-    decoration:
-        buildInputDecorationDetails("Date", Icons.calendar_month_outlined),
-  );
+// final date = TextFormField(
+//   autofocus: false,
+//   //validator: validateEmail,
+//   onSaved: (value) => _date = value,
+//   onChanged: (value) {
+//     _date = value;
+//   },
+//   validator: (value) {
+//     if (value.isEmpty) {
+//       return "Enter Date";
+//     } else {
+//       return null;
+//     }
+//   },
+//   //decoration: buildInputDecoration("Username", Icons.email),
+//   decoration:
+//       buildInputDecorationDetails("Date", Icons.calendar_month_outlined),
+// );
 }
 
 class MyImageView extends StatelessWidget {

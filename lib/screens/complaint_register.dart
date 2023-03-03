@@ -416,7 +416,6 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                             ),
 
                             onChanged: (String change) {
-
                               customerproperty_id=change;
                               setState(() {
                                 customerproperty_id=change;
@@ -426,7 +425,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                                 print(model.customerPrtyList.length);
                               });
                             },
-                          //  value: null,
+                            //value: customerproperty_id,
                             items: model.customerPrtyList.map((CustomerProperties) {
                               return DropdownMenuItem<String>(
                                 child: Text(
@@ -436,9 +435,7 @@ class _ComplaintRegistrationState extends State<ComplaintRegistration> {
                                   ),
                                 ),
                                 value: CustomerProperties.propertyName,
-
                               );
-
                             }).toList(),
                             value:model.customerPrtyList.length==null? customerproperty_id:null,
 
