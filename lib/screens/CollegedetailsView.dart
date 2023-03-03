@@ -71,6 +71,11 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
   }
 
   bool _isVisible = false;
+
+  bool _isVisibl = false;
+
+
+
   static String _summary,_comp_title=" ";
   ///////////////////////////
 
@@ -707,7 +712,7 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                   padding: const EdgeInsets.only(
                                       top: 16.0, right: 8.0, left: 8.0),
                                   child: Visibility(
-                                    visible: _isVisible,
+                                    visible: _isVisibl,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Container(
@@ -715,7 +720,6 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                                         width: 400,
                                         color: LightGrey,
                                         child: TextFormField(
-
                                           keyboardType: TextInputType.name,
                                           onSaved: (value) => _summary = value,
                                           onChanged: (value) {
@@ -955,9 +959,9 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
 
   Widget CamList() {
     return Consumer<UserViewModel>(builder: (contextModel, model, child) {
-      if(model.campusList.first.campus_name!='Select university'){
+      if(model.campusList.first.campus_name!='Select College'){
         model.campusList.insert(
-            0, CampusData(campus_name: 'Select university'));
+            0, CampusData(campus_name: 'Select College'));
         model.campusList.insert(1, CampusData(campus_name: 'other'));}
       return ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -982,11 +986,11 @@ class _CollegedetailsViewState extends State<CollegedetailsView> {
                     campus_id;
                     if (change == "other") {
                       setState(() {
-                        _isVisible = true;
+                        _isVisibl = true;
                       });
                     } else {
                       setState(() {
-                        _isVisible = false;
+                        _isVisibl = false;
                       });
                     }
                     print(campus_id);
